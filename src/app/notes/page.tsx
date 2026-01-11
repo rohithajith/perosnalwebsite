@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { getSubstackPosts, type Post } from "@/lib/rss";
 import { formatDate } from "@/lib/utils";
-import { SITE_CONFIG } from "@/lib/constants";
 
 export const revalidate = 3600;
 
-export default async function Home() {
+export default async function NotesPage() {
   const posts = await getSubstackPosts();
 
   // Group posts by Year/Month
@@ -13,7 +12,6 @@ export default async function Home() {
   
   posts.forEach((post) => {
     const date = new Date(post.pubDate);
-    // Format: "2026 January"
     const key = date.toLocaleDateString("en-US", { year: "numeric", month: "long" });
     if (!groupedPosts[key]) {
       groupedPosts[key] = [];
@@ -21,13 +19,19 @@ export default async function Home() {
     groupedPosts[key].push(post);
   });
 
-  const keys = Object.keys(groupedPosts).sort((a, b) => { // Sort descending by date
+  const keys = Object.keys(groupedPosts).sort((a, b) => { 
      return new Date(b).getTime() - new Date(a).getTime();
   });
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12 md:py-20">
-      <h1 className="text-5xl md:text-6xl font-serif mb-16">Index</h1>
+      <div className="mb-16">
+        <h1 className="text-5xl md:text-6xl font-serif mb-6">Newsletter</h1>
+        <p className="text-xl text-gray-500 max-w-2xl">
+          I write about AI, Engineering, and the future of software. 
+          Here is an archive of all issues.
+        </p>
+      </div>
 
       <div className="space-y-16">
         {keys.map((key) => (
@@ -41,7 +45,7 @@ export default async function Home() {
                       {post.title}
                     </h3>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
-                      {formatDate(post.pubDate)} — {post.categories.slice(0, 3).join(", ") || "Blog"}
+                      {formatDate(post.pubDate)} — {post.categories.slice(0, 3).join(", ") || "Newsletter"}
                     </div>
                   </Link>
                 </article>
@@ -51,14 +55,10 @@ export default async function Home() {
         ))}
 
         {posts.length === 0 && (
-          <div className="py-12 border-t border-dashed border-gray-200 dark:border-gray-800">
-             <p className="text-xl text-gray-500 mb-2">No posts found yet.</p>
-             <p className="text-gray-400">
-               Check out my <a href={SITE_CONFIG.substack.url} target="_blank" className="underline hover:text-foreground">Substack</a> directly or come back later!
-             </p>
-          </div>
+          <p className="text-gray-500">No posts found.</p>
         )}
       </div>
     </div>
   );
 }
+
