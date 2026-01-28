@@ -51,14 +51,14 @@ function AwardCard({ title, organization, year, description, tier }: AwardProps)
            <div className={cn("p-3 rounded-xl bg-gradient-to-br opacity-80 group-hover:opacity-100 transition-opacity", GRADIENTS[tier])}>
               <Icon className="h-6 w-6 text-white drop-shadow-md" strokeWidth={1.5} />
            </div>
-           <span className="text-sm font-mono text-gray-500 dark:text-gray-400 bg-white/10 dark:bg-white/5 py-1 px-3 rounded-full border border-white/10">
+           <span className="text-sm font-mono text-black dark:text-gray-400 bg-white/10 dark:bg-white/5 py-1 px-3 rounded-full border border-white/10">
              {year}
            </span>
         </div>
         
         <h3 className="font-bold text-lg mb-1 group-hover:text-blue-500 transition-colors">{title}</h3>
-        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">{organization}</p>
-        <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+        <p className="text-sm font-medium text-black dark:text-gray-400 mb-3">{organization}</p>
+        <p className="text-sm text-black dark:text-gray-300 leading-relaxed">
           {description}
         </p>
 

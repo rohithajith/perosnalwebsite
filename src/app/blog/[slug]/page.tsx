@@ -1,9 +1,9 @@
 import { getSubstackPosts } from "@/lib/rss";
 import { notFound } from "next/navigation";
 import { formatDate } from "@/lib/utils";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
+import BackToBlog from "@/components/back-to-blog";
+import { Suspense } from "react";
 
 export const revalidate = 3600;
 
@@ -40,9 +40,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
    return (
       <article className="mx-auto max-w-3xl px-6 py-12">
-         <Link href="/blog" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 mb-8 transition-colors">
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Blog
-         </Link>
+         <Suspense fallback={<div className="mb-8"></div>}>
+            <BackToBlog />
+         </Suspense>
          
          <header className="mb-10">
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">{post.title}</h1>

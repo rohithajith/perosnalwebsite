@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display, Racing_Sans_One, PT_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
@@ -21,6 +21,18 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
 });
 
+const racingSansOne = Racing_Sans_One({
+  weight: "400",
+  variable: "--font-racing-sans",
+  subsets: ["latin"],
+});
+
+const ptMono = PT_Mono({
+  weight: "400",
+  variable: "--font-pt-mono",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
 
   title: {
@@ -38,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased min-h-screen flex flex-col bg-background text-foreground`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${racingSansOne.variable} ${ptMono.variable} antialiased min-h-screen flex flex-col bg-background text-foreground`}
       >
         <ThemeProvider
           attribute="class"

@@ -9,7 +9,7 @@ export default function ContactPage() {
       return (
          <div className="mx-auto max-w-3xl px-6 py-12 text-center">
             <h1 className="text-3xl font-bold mb-4">Thanks for reaching out!</h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400">I'll get back to you soon.</p>
+            <p className="text-lg text-black dark:text-gray-400">I'll get back to you soon.</p>
          </div>
       );
   }
@@ -18,7 +18,7 @@ export default function ContactPage() {
     <div className="mx-auto max-w-xl px-6 py-12">
        <div className="mb-10 text-center">
           <h1 className="text-4xl font-bold tracking-tight mb-4">Contact</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400">Send me a message below.</p>
+          <p className="text-lg text-black dark:text-gray-400">Send me a message below.</p>
        </div>
 
        <form onSubmit={handleSubmit} className="space-y-6">

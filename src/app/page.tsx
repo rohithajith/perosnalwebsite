@@ -27,7 +27,7 @@ export default async function Home() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12 md:py-20">
-      <h1 className="text-5xl md:text-6xl font-serif mb-16">Index</h1>
+      <h1 className="text-5xl md:text-6xl mb-16" style={{ fontFamily: "var(--font-pt-mono)" }}>Index</h1>
 
       <div className="space-y-16">
         {keys.map((key) => (
@@ -40,7 +40,7 @@ export default async function Home() {
                     <h3 className="text-xl font-medium group-hover:underline decoration-1 underline-offset-4">
                       {post.title}
                     </h3>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                    <div className="text-sm text-black dark:text-gray-400">
                       {formatDate(post.pubDate)} — {post.categories.slice(0, 3).join(", ") || "Blog"}
                     </div>
                   </Link>
@@ -52,8 +52,8 @@ export default async function Home() {
 
         {posts.length === 0 && (
           <div className="py-12 border-t border-dashed border-gray-200 dark:border-gray-800">
-             <p className="text-xl text-gray-500 mb-2">No posts found yet.</p>
-             <p className="text-gray-400">
+             <p className="text-xl text-black dark:text-gray-400 mb-2">No posts found yet.</p>
+             <p className="text-black dark:text-gray-400">
                Check out my <a href={SITE_CONFIG.substack.url} target="_blank" className="underline hover:text-foreground">Substack</a> directly or come back later!
              </p>
           </div>

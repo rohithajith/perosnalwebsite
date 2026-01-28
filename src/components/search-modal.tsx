@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { Search, FileText } from "lucide-react";
-import { SITE_CONFIG } from "@/lib/constants";
+import { Search, FileText, Loader } from "lucide-react";
 import Link from "next/link";
 
 interface SearchResult {
@@ -17,23 +16,41 @@ interface SearchModalProps {
 
 export function SearchModal({ open, onClose }: SearchModalProps) {
   const [query, setQuery] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [posts, setPosts] = useState<SearchResult[]>([]);
+  const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const cacheRef = useRef<SearchResult[]>([]);
+
+  // Fetch all blog posts once on mount
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/posts");
+        if (res.ok) {
+          const posts = await res.json();
+          cacheRef.current = posts.map((post: any) => ({
+            title: post.title,
+            description: post.contentSnippet || "",
+            href: `/blog/${post.slug}?referrer=search`,
+          }));
+        }
+      } catch (e) {
+        console.error("Failed to fetch posts:", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (open && cacheRef.current.length === 0) {
+      fetchPosts();
+    }
+  }, [open]);
 
   useEffect(() => {
     if (open) {
       setQuery("");
       setTimeout(() => inputRef.current?.focus(), 100);
-      // fetch posts from API route
-      setLoading(true);
-      fetch("/api/posts")
-        .then((r) => r.json())
-        .then((data) => {
-          setPosts(data.posts || []);
-        })
-        .catch(() => setPosts([]))
-        .finally(() => setLoading(false));
     }
   }, [open]);
 
@@ -51,17 +68,20 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
     };
   }, [open, onClose]);
 
-  // Use posts fetched from server
-  const allResults: SearchResult[] = posts;
-
-  const q = query.toLowerCase().trim();
-  const filtered = q
-    ? allResults.filter(
+  // Search as user types
+  useEffect(() => {
+    const q = query.toLowerCase().trim();
+    if (q) {
+      const filtered = cacheRef.current.filter(
         (item) =>
           item.title.toLowerCase().includes(q) ||
           item.description.toLowerCase().includes(q)
-      )
-    : allResults;
+      );
+      setResults(filtered);
+    } else {
+      setResults([]);
+    }
+  }, [query]);
 
   if (!open) return null;
 
@@ -85,26 +105,38 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <button
-            className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded"
-            onClick={onClose}
-          >
-            ESC
-          </button>
+          {loading && <Loader className="w-4 h-4 text-gray-400 animate-spin" />}
+          {!loading && (
+            <button
+              className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded"
+              onClick={onClose}
+            >
+              ESC
+            </button>
+          )}
         </div>
 
         {/* Results */}
         <div className="max-h-[60vh] overflow-y-auto p-2">
-          {filtered.length === 0 ? (
+          {loading && cacheRef.current.length === 0 ? (
+            <div className="text-gray-400 text-center py-12">
+              <Loader className="w-5 h-5 animate-spin mx-auto mb-2" />
+              Loading blogs...
+            </div>
+          ) : !query ? (
+            <div className="text-gray-400 text-center py-8 text-sm">
+              Start typing to search...
+            </div>
+          ) : results.length === 0 ? (
             <div className="text-gray-400 text-center py-12">
               No results found for &quot;{query}&quot;
             </div>
           ) : (
             <div>
               <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Blogs ({filtered.length})
+                Blogs ({results.length})
               </div>
-              {filtered.map((item, idx) => (
+              {results.map((item, idx) => (
                 <Link
                   key={`blog-${idx}`}
                   href={item.href}
@@ -118,8 +150,8 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
                     <div className="font-medium text-gray-900 dark:text-gray-100 truncate">
                       {item.title}
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
-                      {item.description}
+                    <div className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
+                      {item.description || "No description available"}
                     </div>
                   </div>
                 </Link>
@@ -131,3 +163,4 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
     </div>
   );
 }
+
