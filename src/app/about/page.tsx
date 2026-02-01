@@ -28,7 +28,7 @@ export default function AboutPage() {
           
           <div className="space-y-4 w-full">
             
-            <div className="space-y-2 text-sm text-black dark:text-gray-400 -ml-[5px]">
+            <div className="space-y-2 text-sm text-black dark:text-gray-400 -ml-[5px]"> 
                <div className="flex items-center justify-center md:justify-start gap-2">
                  <MapPin className="h-4 w-4" />
                  <span>Aberdeen, UK</span> 
@@ -74,7 +74,7 @@ export default function AboutPage() {
 
             <div>
               <div className="flex justify-between items-baseline mb-1">
-                <h4 className="font-bold text-foreground text-lg">Blackbucks Pat Ltd</h4>
+                <h4 className="font-bold text-foreground text-lg">Blackbucks Pvt Ltd</h4>
                 <span className="text-sm text-black dark:text-gray-400">09/2021 - 02/2022</span>
               </div>
               <p className="text-sm text-black dark:text-gray-400 mb-2">AI ML Teaching Assistant</p>
@@ -110,5 +110,3 @@ export default function AboutPage() {
     </div>
   );
 }
-
-
