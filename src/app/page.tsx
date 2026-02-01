@@ -59,6 +59,7 @@ export default async function Home() {
           </div>
         )}
       </div>
+      <h4 className="font-bold text-foreground text-lg">Blackbucks Pvt Ltd</h4>
     </div>
   );
 }
