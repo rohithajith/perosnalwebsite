@@ -6,6 +6,7 @@ import { ThemeToggle } from "./theme-toggle";
 import { SITE_CONFIG } from "@/lib/constants";
 import { useState, useEffect, useRef } from "react";
 import { SearchModal } from "@/components/search-modal";
+import MobileNav from "@/components/mobile-nav";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 
@@ -94,6 +95,7 @@ export function Navbar() {
 
                     {/* Mobile hamburger: visible on small screens only */}
                     <button
+                      type="button"
                       onClick={() => setMobileOpen(true)}
                       aria-label="Open menu"
                       className="md:hidden inline-flex items-center justify-center rounded-full bg-background/60 supports-[backdrop-filter]:backdrop-blur-lg ring-1 ring-foreground/6 w-12 h-8 px-2 py-1"
@@ -150,44 +152,8 @@ export function Navbar() {
       </div>
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
       {/* Mobile slide-over menu */}
-      {mobileOpen && (
-        <MobileNav onClose={() => setMobileOpen(false)} />
-      )}
+      {mobileOpen && <MobileNav onClose={() => setMobileOpen(false)} />}
     </header>
   );
 }
-
-function MobileNav({ onClose }: { onClose: () => void }) {
-  // Render client-side interactive slide-over
-  return (
-    <div className="fixed inset-0 z-50 flex">
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-      <aside className="ml-auto w-80 max-w-full bg-background text-foreground p-6 shadow-xl animate-slide-in-from-right">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center">
-            <img src="/minilogos.png" alt="logo" className="w-10 h-10 object-contain" />
-            <span className="ml-3 font-semibold">{SITE_CONFIG.name}</span>
-          </div>
-          <button onClick={onClose} aria-label="Close menu" className="p-2">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              <path d="M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </button>
-        </div>
-
-        <nav className="flex flex-col gap-4">
-          {SITE_CONFIG.nav.map((item) => (
-            <Link key={item.href} href={item.href} onClick={onClose} className="text-lg font-medium">
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="mt-6">
-          <button onClick={() => { onClose(); setTimeout(() => {}, 0); }} className="w-full rounded-full py-2 bg-foreground text-background">Get in touch</button>
-        </div>
-      </aside>
-    </div>
-  );
-}
+ 
