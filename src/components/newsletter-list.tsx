@@ -49,7 +49,7 @@ export default function NewsletterList({ groupedPosts, keys }: Props) {
     <div className="mx-auto max-w-5xl px-6 py-12 md:py-20">
       <div className="mb-16">
         <h1 className="text-5xl md:text-6xl font-serif mb-6">Newsletter</h1>
-        <p className="text-xl text-black dark:text-gray-400 max-w-2xl">
+        <p className="text-xl text-foreground max-w-2xl">
           Insights on enterprise AI, automation systems, and emerging tools that transform business operations. Subscribe for practical guides, real-world implementations, and strategic analysis delivered to your inbox.
         </p>
         <a href="https://aiintegrationsforbiz.substack.com/subscribe?next=https%3A%2F%2Fsubstack.com%2F%40integrationswithai%3F&utm_source=profile-page&utm_medium=web&utm_campaign=substack_profile&just_signed_up=true" className="inline-block w-full sm:w-auto bg-orange-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors mt-6">
@@ -68,7 +68,7 @@ export default function NewsletterList({ groupedPosts, keys }: Props) {
                     <h3 className="text-xl font-medium group-hover:underline decoration-1 underline-offset-4">
                       {post.title}
                     </h3>
-                    <div className="text-sm text-black dark:text-gray-400">
+                    <div className="text-sm text-foreground">
                       {formatDate(post.pubDate)} — {post.categories.slice(0, 3).join(", ") || "Newsletter"}
                     </div>
                   </Link>

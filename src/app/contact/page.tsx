@@ -9,7 +9,7 @@ export default function ContactPage() {
       return (
          <div className="mx-auto max-w-3xl px-6 py-12 text-center">
             <h1 className="text-3xl font-bold mb-4">Thanks for reaching out!</h1>
-            <p className="text-lg text-black dark:text-gray-400">I'll get back to you soon.</p>
+            <p className="text-lg text-foreground">I'll get back to you soon.</p>
          </div>
       );
   }
@@ -18,7 +18,7 @@ export default function ContactPage() {
     <div className="mx-auto max-w-xl px-6 py-12">
        <div className="mb-10 text-center">
           <h1 className="text-4xl font-bold tracking-tight mb-4">Contact</h1>
-          <p className="text-lg text-black dark:text-gray-400">Send me a message below.</p>
+          <p className="text-lg text-foreground">Send me a message below.</p>
        </div>
 
        <form onSubmit={handleSubmit} className="space-y-6">
@@ -30,7 +30,7 @@ export default function ContactPage() {
                id="email"
                type="email" 
                name="email"
-               className="flex h-10 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-background px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+               className="flex h-10 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-background px-3 py-2 text-sm placeholder:text-foreground/60 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                placeholder="you@example.com"
             />
             <ValidationError 
@@ -49,7 +49,7 @@ export default function ContactPage() {
                id="message"
                name="message"
                rows={5}
-               className="flex w-full rounded-md border border-gray-300 dark:border-gray-700 bg-background px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+               className="flex w-full rounded-md border border-gray-300 dark:border-gray-700 bg-background px-3 py-2 text-sm placeholder:text-foreground/60 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                placeholder="Your message..."
             />
             <ValidationError 

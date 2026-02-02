@@ -1,0 +1,6 @@
+name = "rohithajith2405"
+account_id = "7b8e9f400b8fb41fed6c06f17f1732d2"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "out"
+
+[env.production]

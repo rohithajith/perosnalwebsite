@@ -26,12 +26,12 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const res = await fetch("/api/posts");
+        const res = await fetch("/posts.json");
         if (res.ok) {
           const posts = await res.json();
           cacheRef.current = posts.map((post: any) => ({
             title: post.title,
-            description: post.contentSnippet || "",
+            description: post.contentSnippet || post.description || "",
             href: `/blog/${post.slug}?referrer=search`,
           }));
         }
@@ -96,19 +96,19 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
       >
         {/* Search Input */}
         <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-800">
-          <Search className="w-5 h-5 text-gray-400" />
+          <Search className="w-5 h-5 text-foreground/60" />
           <input
             ref={inputRef}
             type="text"
-            className="flex-1 bg-transparent text-base text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none"
+            className="flex-1 bg-transparent text-base text-foreground placeholder-gray-400 focus:outline-none"
             placeholder="Search blogs..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          {loading && <Loader className="w-4 h-4 text-gray-400 animate-spin" />}
+          {loading && <Loader className="w-4 h-4 text-foreground/60 animate-spin" />}
           {!loading && (
             <button
-              className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded"
+              className="text-xs text-foreground/60 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded"
               onClick={onClose}
             >
               ESC
@@ -119,21 +119,21 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
         {/* Results */}
         <div className="max-h-[60vh] overflow-y-auto p-2">
           {loading && cacheRef.current.length === 0 ? (
-            <div className="text-gray-400 text-center py-12">
+            <div className="text-foreground/60 text-center py-12">
               <Loader className="w-5 h-5 animate-spin mx-auto mb-2" />
               Loading blogs...
             </div>
           ) : !query ? (
-            <div className="text-gray-400 text-center py-8 text-sm">
+            <div className="text-foreground/60 text-center py-8 text-sm">
               Start typing to search...
             </div>
           ) : results.length === 0 ? (
-            <div className="text-gray-400 text-center py-12">
+            <div className="text-foreground/60 text-center py-12">
               No results found for &quot;{query}&quot;
             </div>
           ) : (
             <div>
-              <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              <div className="px-3 py-2 text-xs font-semibold text-foreground/70 uppercase tracking-wider">
                 Blogs ({results.length})
               </div>
               {results.map((item, idx) => (
@@ -147,10 +147,10 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
                     <FileText className="w-4 h-4" />
                   </span>
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-gray-900 dark:text-gray-100 truncate">
+                    <div className="font-medium text-foreground truncate">
                       {item.title}
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
+                    <div className="text-sm text-foreground/70 line-clamp-2">
                       {item.description || "No description available"}
                     </div>
                   </div>

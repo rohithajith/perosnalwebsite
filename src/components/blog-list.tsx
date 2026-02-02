@@ -48,7 +48,7 @@ export default function BlogList({ posts }: Props) {
     <div className="mx-auto max-w-3xl px-6 py-12">
       <div className="border-b border-gray-200 dark:border-gray-800 pb-8 mb-8">
         <h1 className="text-4xl font-bold tracking-tight mb-4">Blog</h1>
-        <p className="text-xl text-gray-900 dark:text-gray-400">Exploring cutting-edge AI strategies, agentic workflows, scalable infrastructure, and enterprise solutions to drive innovation and operational excellence.</p>
+        <p className="text-xl text-foreground">Exploring cutting-edge AI strategies, agentic workflows, scalable infrastructure, and enterprise solutions to drive innovation and operational excellence.</p>
       </div>
       <div className="space-y-12">
         {posts.map((post) => (
@@ -58,10 +58,10 @@ export default function BlogList({ posts }: Props) {
                 {post.title}
               </h2>
             </Link>
-            <div className="text-sm text-gray-900 dark:text-gray-400">
+            <div className="text-sm text-foreground">
               <time dateTime={post.pubDate}>{formatDate(post.pubDate)}</time>
             </div>
-            <p className="text-gray-900 dark:text-gray-300 leading-relaxed">
+            <p className="text-foreground/90 leading-relaxed">
               {post.contentSnippet}
             </p>
             <Link href={`/blog/${post.slug}?referrer=blog`} onClick={saveScroll} className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">

@@ -2,6 +2,8 @@ import { MetadataRoute } from 'next'
 import { SITE_CONFIG } from '@/lib/constants'
 import { getSubstackPosts } from '@/lib/rss'
 
+export const dynamic = 'force-static'
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getSubstackPosts()
   

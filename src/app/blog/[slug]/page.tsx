@@ -46,7 +46,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
          
          <header className="mb-10">
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">{post.title}</h1>
-            <time className="text-gray-500 dark:text-gray-400" dateTime={post.pubDate}>
+            <time className="text-foreground/70" dateTime={post.pubDate}>
                {formatDate(post.pubDate)}
             </time>
          </header>

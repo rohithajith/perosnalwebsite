@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import * as React from "react";
 import { ThemeToggle } from "./theme-toggle";
 import { SITE_CONFIG } from "@/lib/constants";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { SearchModal } from "@/components/search-modal";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
@@ -13,10 +14,13 @@ export function Navbar() {
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const { resolvedTheme } = useTheme();
-  const logoSrc = resolvedTheme === 'dark' ? '/darkmodecut.png' : '/lightmode.png';
+  const logoSrc = resolvedTheme === "dark" ? "/darkmodecut.png" : "/lightmode.png";
+  const [showToggle, setShowToggle] = useState(false);
+  const leaveTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    setMounted(true);
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
   }, []);
 
   useEffect(() => {
@@ -30,44 +34,103 @@ export function Navbar() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (leaveTimerRef.current) {
+        clearTimeout(leaveTimerRef.current);
+        leaveTimerRef.current = null;
+      }
+    };
+  }, []);
+
+  const aboutIndex = SITE_CONFIG.nav.findIndex((it) => it.href === "/about");
+  const mainNavItems = aboutIndex >= 0 ? SITE_CONFIG.nav.slice(0, aboutIndex + 1) : SITE_CONFIG.nav;
+  const trailingNavItems = aboutIndex >= 0 ? SITE_CONFIG.nav.slice(aboutIndex + 1) : [];
+
   return (
-    <header className="sticky top-0 z-40 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" style={{ height: '80px' }}>
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 sm:px-6 lg:px-8" style={{ height: '80px' }}>
-        <div className="flex items-center gap-8">
-          {pathname !== '/about' && mounted && (
-            <Link href="/" className="flex items-center">
-              <img
-                src={logoSrc}
-                alt={`${SITE_CONFIG.name} Logo`}
-                style={{ height: '80px' }}
-                className="w-auto"
-              />
-            </Link>
-          )}
-        </div>
-        <div className="flex items-center gap-6">
-          <nav className="hidden md:flex items-center gap-6 text-xs font-bold tracking-widest uppercase">
-            <button
-              className="text-muted-foreground mr-2 hidden lg:inline-block hover:text-blue-600 transition-colors"
-              onClick={() => setSearchOpen(true)}
-              aria-label="Open search"
-              type="button"
-            >
-              Search ⌘K
-            </button>
-            {SITE_CONFIG.nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="transition-colors hover:text-foreground/80 text-foreground"
+    <header className="sticky top-5 z-40 w-full flex justify-center pointer-events-none">
+      <div className="mx-4 w-full max-w-4xl pointer-events-auto">
+        {/* Wrapper group: default single pill; on hover children get their own pill styles */}
+        <div
+          className="group relative w-full"
+          onMouseEnter={() => {
+            if (leaveTimerRef.current) {
+              clearTimeout(leaveTimerRef.current);
+              leaveTimerRef.current = null;
+            }
+            setShowToggle(true);
+          }}
+          onMouseLeave={() => {
+            leaveTimerRef.current = window.setTimeout(() => {
+              setShowToggle(false);
+              leaveTimerRef.current = null;
+            }, 180);
+          }}
+        >
+          <div className="w-full">
+            <div className="relative w-full">
+              {/* Parent pill (default) - stable layout; we won't animate its size/position to avoid shifting */}
+              <div className="bg-background/60 supports-[backdrop-filter]:backdrop-blur-lg rounded-full py-3 px-6 shadow-lg transition-all duration-300 ease-in-out">
+                <div className="flex items-center justify-between gap-6">
+                  {/* Left: logo only */}
+                  <div className="flex items-center pointer-events-auto">
+                    {mounted && pathname && (
+                      <Link href="/" className="flex items-center">
+                        <img src={logoSrc} alt={`${SITE_CONFIG.name} Logo`} style={{ height: 64 }} className="w-auto" />
+                      </Link>
+                    )}
+                  </div>
+
+                  {/* Right: nav + search (always right aligned). Toggle remains hidden until hover. */}
+                  <div className="flex items-center gap-3 md:gap-6 pointer-events-auto flex-nowrap">
+                    <button
+                      onClick={() => setSearchOpen(true)}
+                      aria-label="Open search"
+                      className="text-muted-foreground mr-0 hidden md:inline-flex items-center gap-2 hover:text-foreground/80 transition-colors text-base font-medium whitespace-nowrap"
+                    >
+                      Search ⌘K
+                    </button>
+
+                    <nav className="hidden md:flex items-center gap-3 md:gap-6 text-sm font-semibold uppercase tracking-wider transition-all duration-300 ease-in-out whitespace-nowrap">
+                      {SITE_CONFIG.nav.map((item) => (
+                        <Link key={item.href} href={item.href} className="text-foreground hover:text-foreground/80 transition-colors">
+                          {item.label}
+                        </Link>
+                      ))}
+                    </nav>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right floating toggle bubble: appears on hover, positioned absolutely so it doesn't shift layout */}
+              {/* Fixed floating toggle bubble that visibly emerges to the right on hover */}
+              <div
+                className={`absolute right-[-6rem] top-1/2 -translate-y-1/2 z-50 ${showToggle ? "pointer-events-auto" : "pointer-events-none"}`}
+                onMouseEnter={() => {
+                  if (leaveTimerRef.current) {
+                    clearTimeout(leaveTimerRef.current);
+                    leaveTimerRef.current = null;
+                  }
+                  setShowToggle(true);
+                }}
+                onMouseLeave={() => {
+                  leaveTimerRef.current = window.setTimeout(() => {
+                    setShowToggle(false);
+                    leaveTimerRef.current = null;
+                  }, 180);
+                }}
               >
-                {item.label}
-              </Link>
-            ))}
-            <ThemeToggle />
-          </nav>
-          <div className="flex items-center gap-2 md:hidden">
-             <ThemeToggle />
+                <div
+                  className={`rounded-full bg-background/60 ring-1 ring-foreground/6 shadow-2xl transform transition-all duration-200 ease-out ${
+                    showToggle ? "opacity-100 scale-100 translate-x-0" : "opacity-0 scale-90"
+                  }`}
+                >
+                  <div className="flex items-center justify-center w-16 h-16">
+                    <ThemeToggle size="large" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -24,7 +24,7 @@ export default function BackToBlog() {
     <Link 
       href={backHref}
       onClick={handleClick}
-      className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 mb-8 transition-colors"
+      className="inline-flex items-center text-sm text-foreground/70 hover:text-foreground mb-8 transition-colors"
     >
       <ArrowLeft className="mr-2 h-4 w-4" /> {backLabel}
     </Link>

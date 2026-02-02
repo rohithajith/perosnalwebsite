@@ -12,7 +12,8 @@ interface AwardProps {
 }
 
 const GRADIENTS = {
-  gold: "from-amber-300 via-yellow-500 to-orange-600",
+  // made gold gradient richer/brighter for light mode
+  gold: "from-amber-400 via-yellow-500 to-amber-600",
   silver: "from-slate-200 via-gray-400 to-zinc-600",
   bronze: "from-amber-700 via-orange-600 to-red-600",
   special: "from-emerald-300 via-emerald-500 to-teal-600",
@@ -34,14 +35,16 @@ function AwardCard({ title, organization, year, description, tier }: AwardProps)
       {/* 1. Rotating Perimeter Gradient Ring */}
       {/* Utilising a pseudo-border effect via absolute positioning behind content */}
       <div className={cn(
-        "absolute -inset-[150%] opacity-20 group-hover:opacity-50 transition-opacity duration-500 animate-spin-slow",
-        `bg-[conic-gradient(from_0deg,transparent_0_340deg,white_360deg)]` 
+        // slightly stronger base opacity in light mode, reduce in dark
+        "absolute -inset-[150%] opacity-30 dark:opacity-20 group-hover:opacity-50 transition-opacity duration-500 animate-spin-slow",
+        `bg-[conic-gradient(from_0deg,transparent_0_340deg,white_360deg)]`
       )} />
 
        {/* Colored Gradient Ring specifically matching tier */}
       <div className={cn(
-         "absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-700",
-         `bg-gradient-to-br ${GRADIENTS[tier]}`
+        // keep a subtle tier color visible in light mode, smaller in dark
+        "absolute inset-0 opacity-10 dark:opacity-5 group-hover:opacity-30 dark:group-hover:opacity-20 transition-opacity duration-700",
+        `bg-gradient-to-br ${GRADIENTS[tier]}`
       )} />
 
 
@@ -51,14 +54,14 @@ function AwardCard({ title, organization, year, description, tier }: AwardProps)
            <div className={cn("p-3 rounded-xl bg-gradient-to-br opacity-80 group-hover:opacity-100 transition-opacity", GRADIENTS[tier])}>
               <Icon className="h-6 w-6 text-white drop-shadow-md" strokeWidth={1.5} />
            </div>
-           <span className="text-sm font-mono text-black dark:text-gray-400 bg-white/10 dark:bg-white/5 py-1 px-3 rounded-full border border-white/10">
+           <span className="text-sm font-mono text-foreground bg-white/10 dark:bg-white/5 py-1 px-3 rounded-full border border-white/10">
              {year}
            </span>
         </div>
         
         <h3 className="font-bold text-lg mb-1 group-hover:text-blue-500 transition-colors">{title}</h3>
-        <p className="text-sm font-medium text-black dark:text-gray-400 mb-3">{organization}</p>
-        <p className="text-sm text-black dark:text-gray-300 leading-relaxed">
+        <p className="text-sm font-medium text-foreground mb-3">{organization}</p>
+        <p className="text-sm text-foreground leading-relaxed">
           {description}
         </p>
 

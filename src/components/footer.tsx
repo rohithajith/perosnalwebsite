@@ -8,20 +8,20 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand Section */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-black dark:text-white">
+            <h3 className="text-lg font-semibold text-foreground">
               {SITE_CONFIG.name}
             </h3>
-            <p className="text-sm text-black dark:text-gray-400">
+            <p className="text-sm text-foreground">
               {SITE_CONFIG.tagline}
             </p>
-            <p className="text-sm text-black dark:text-gray-400">
+            <p className="text-sm text-foreground">
               &copy; {new Date().getFullYear()} {SITE_CONFIG.author}. All rights reserved.
             </p>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="text-sm font-semibold text-black dark:text-white uppercase tracking-wider">
+            <h4 className="text-sm font-semibold text-foreground uppercase tracking-wider">
               Quick Links
             </h4>
             <nav className="flex flex-col space-y-2">
@@ -29,7 +29,7 @@ export function Footer() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-sm text-black dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  className="text-sm text-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 >
                   {item.label}
                 </Link>
@@ -39,7 +39,7 @@ export function Footer() {
 
           {/* Social Links */}
           <div className="space-y-4">
-            <h4 className="text-sm font-semibold text-black dark:text-white uppercase tracking-wider">
+            <h4 className="text-sm font-semibold text-foreground uppercase tracking-wider">
               Connect
             </h4>
             <div className="flex space-x-4">
@@ -47,7 +47,7 @@ export function Footer() {
                 href={SITE_CONFIG.social.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-black dark:text-gray-400 hover:text-blue-400 transition-colors"
+                className="text-foreground hover:text-blue-400 transition-colors"
                 aria-label="Twitter"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -58,7 +58,7 @@ export function Footer() {
                 href={SITE_CONFIG.social.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-black dark:text-gray-400 hover:text-blue-400 transition-colors"
+                className="text-foreground hover:text-blue-400 transition-colors"
                 aria-label="LinkedIn"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -69,7 +69,7 @@ export function Footer() {
                 href={SITE_CONFIG.social.substack}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-black dark:text-gray-400 hover:text-blue-400 transition-colors"
+                className="text-foreground hover:text-blue-400 transition-colors"
                 aria-label="Substack"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -80,7 +80,7 @@ export function Footer() {
                 href={SITE_CONFIG.social.threads}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-black dark:text-gray-400 hover:text-blue-400 transition-colors"
+                className="text-foreground hover:text-blue-400 transition-colors"
                 aria-label="Threads"
               >
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 50 50">
