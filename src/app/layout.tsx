@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import GlobalLoader from "@/components/global-loader";
 import { SITE_CONFIG } from "@/lib/constants";
 
 const geistSans = Geist({
@@ -40,6 +41,11 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_CONFIG.name}`,
   },
   description: SITE_CONFIG.description,
+  icons: {
+    icon: "/minilogos.png",
+    shortcut: "/minilogos.png",
+    apple: "/minilogos.png",
+  },
 };
 
 export default function RootLayout({
@@ -52,6 +58,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${racingSansOne.variable} ${ptMono.variable} antialiased min-h-screen flex flex-col bg-background text-foreground`}
       >
+        <GlobalLoader />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

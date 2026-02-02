@@ -1,6 +1,6 @@
 import { getSubstackPosts } from "@/lib/rss";
 import { notFound } from "next/navigation";
-import { formatDate } from "@/lib/utils";
+import { formatDate, enhanceMediaInHTML } from "@/lib/utils";
 import { Metadata } from "next";
 import BackToBlog from "@/components/back-to-blog";
 import { Suspense } from "react";
@@ -51,9 +51,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </time>
          </header>
 
-         <div 
+         <div
             className="prose prose-lg dark:prose-invert max-w-none prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:underline prose-headings:font-bold prose-img:rounded-xl"
-            dangerouslySetInnerHTML={{ __html: post.content }} 
+            dangerouslySetInnerHTML={{ __html: enhanceMediaInHTML(post.content) }}
          />
       </article>
    );
