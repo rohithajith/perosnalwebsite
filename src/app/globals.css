@@ -160,6 +160,15 @@ body {
   animation: pop-in 600ms ease;
 }
 
+/* Slide-in animation for mobile menu */
+@keyframes slide-in-from-right {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.animate-slide-in-from-right {
+  animation: slide-in-from-right 240ms cubic-bezier(.2,.9,.3,1) both;
+}
+
 
 
 
