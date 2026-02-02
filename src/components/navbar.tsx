@@ -85,15 +85,7 @@ export function Navbar() {
 
                   {/* Right: nav + search (always right aligned). Toggle remains hidden until hover. */}
                   <div className="flex items-center gap-3 md:gap-6 pointer-events-auto flex-nowrap">
-                    <button
-                      onClick={() => setSearchOpen(true)}
-                      aria-label="Open search"
-                      className="text-muted-foreground mr-0 hidden md:inline-flex items-center gap-2 hover:text-foreground/80 transition-colors text-base font-medium whitespace-nowrap"
-                    >
-                      Search ⌘K
-                    </button>
-
-                    {/* Mobile hamburger: visible on small screens only */}
+                    {/* Mobile hamburger: visible on small screens only - render first */}
                     <button
                       type="button"
                       onClick={() => setMobileOpen(true)}
@@ -105,6 +97,14 @@ export function Navbar() {
                         <rect y="6" width="20" height="2" rx="1" fill="currentColor" />
                         <rect y="11" width="20" height="2" rx="1" fill="currentColor" />
                       </svg>
+                    </button>
+
+                    <button
+                      onClick={() => setSearchOpen(true)}
+                      aria-label="Open search"
+                      className="text-muted-foreground mr-0 hidden md:inline-flex items-center gap-2 hover:text-foreground/80 transition-colors text-base font-medium whitespace-nowrap"
+                    >
+                      Search ⌘K
                     </button>
 
                     <nav className="hidden md:flex items-center gap-3 md:gap-6 text-sm font-semibold uppercase tracking-wider transition-all duration-300 ease-in-out whitespace-nowrap">
