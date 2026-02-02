@@ -46,12 +46,12 @@ export default function ProjectsPage() {
       </div>
 
       <h3 className="text-foreground mb-8 mt-16 font-serif text-3xl">In production</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 mb-16 mt-16">
+      <div className="mb-16 mt-16">
         <a
           href="https://landingpage.reviewhelp.uk"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-col items-start p-6 border-2 border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800 shadow-md hover:shadow-xl transition-all duration-300 hover:border-blue-500 dark:hover:border-blue-500 border-l-4 border-l-blue-600 dark:border-l-blue-500 hover:ring-4 hover:ring-blue-200/50 dark:hover:ring-blue-500/30"
+          className="w-[70%] md:w-auto md:min-w-[280px] md:max-w-xs flex flex-col items-start p-6 border-2 border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800 shadow-md hover:shadow-xl transition-all duration-300 hover:border-blue-500 dark:hover:border-blue-500 border-l-4 border-l-blue-600 dark:border-l-blue-500 hover:ring-4 hover:ring-blue-200/50 dark:hover:ring-blue-500/30"
         >
           <div className="w-full mb-6">
               <div className="w-20 h-20 rounded-lg bg-white flex items-center justify-center shadow-sm border border-gray-200 mb-4">

@@ -9,6 +9,7 @@ interface AwardProps {
   year: string;
   description: string;
   tier: "gold" | "silver" | "bronze" | "special";
+  pdfUrl?: string;
 }
 
 const GRADIENTS = {
@@ -26,10 +27,10 @@ const ICONS = {
   special: Star,
 };
 
-function AwardCard({ title, organization, year, description, tier }: AwardProps) {
+function AwardCard({ title, organization, year, description, tier, pdfUrl }: AwardProps) {
   const Icon = ICONS[tier];
   
-  return (
+  const CardContent = (
     <div className="group relative isolate overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.015] dark:from-white/[0.05] dark:to-white/[0.005] hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
       
       {/* 1. Rotating Perimeter Gradient Ring */}
@@ -79,6 +80,24 @@ function AwardCard({ title, organization, year, description, tier }: AwardProps)
       </div>
     </div>
   );
+  
+  if (pdfUrl) {
+    return (
+      <a 
+        href={pdfUrl} 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="block cursor-pointer"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        {CardContent}
+      </a>
+    );
+  }
+  
+  return CardContent;
 }
 
 export function AwardsSection() {
@@ -92,6 +111,7 @@ export function AwardsSection() {
           year="2025"
           description="Received for outstanding dissertation project (HotelAI) demonstrating exceptional innovation in AI application."
           tier="gold"
+          pdfUrl="/Final-A2-poster_2025.pdf"
         />
         <AwardCard 
           title="Hackathon Winner"

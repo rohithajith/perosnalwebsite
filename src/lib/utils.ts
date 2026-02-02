@@ -34,7 +34,7 @@ export function enhanceMediaInHTML(html: string) {
     if (!/decoding=/.test(attrs)) newAttrs += ' decoding="async"';
     if (!/fetchpriority=/.test(attrs)) newAttrs += ' fetchpriority="low"';
     if (!/class=/.test(attrs)) newAttrs += ' class="lazy-media"';
-    else newAttrs = newAttrs.replace(/class=(['\"])(.*?)\1/, (m, q, v) => `class=${q}${v} lazy-media${q}`);
+    else newAttrs = newAttrs.replace(/class=(['\"])(.*?)\1/, (m: string, q: string, v: string) => `class=${q}${v} lazy-media${q}`);
 
     // Inline onload to add a loaded class which our CSS uses to transition opacity
     if (!/onload=/.test(newAttrs)) newAttrs += ' onload="this.classList.add(\'loaded\')"';
@@ -47,7 +47,7 @@ export function enhanceMediaInHTML(html: string) {
     let newAttrs = attrs;
     if (!/loading=/.test(attrs)) newAttrs += ' loading="lazy"';
     if (!/class=/.test(attrs)) newAttrs += ' class="lazy-media"';
-    else newAttrs = newAttrs.replace(/class=(['\"])(.*?)\1/, (m, q, v) => `class=${q}${v} lazy-media${q}`);
+    else newAttrs = newAttrs.replace(/class=(['\"])(.*?)\1/, (m: string, q: string, v: string) => `class=${q}${v} lazy-media${q}`);
     if (!/onload=/.test(newAttrs)) newAttrs += ' onload="this.classList.add(\'loaded\')"';
 
     return `<div class=\"media-wrapper\"><div class=\"media-skeleton\"></div><iframe${newAttrs}></iframe></div>`;

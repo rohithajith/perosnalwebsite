@@ -98,7 +98,7 @@ export function Navbar() {
                       type="button"
                       onClick={() => setMobileOpen(true)}
                       aria-label="Open menu"
-                      className="md:hidden inline-flex items-center justify-center rounded-full bg-background/60 supports-[backdrop-filter]:backdrop-blur-lg ring-1 ring-foreground/6 w-12 h-8 px-2 py-1"
+                      className="md:hidden inline-flex items-center justify-center rounded-full bg-background/60 supports-[backdrop-filter]:backdrop-blur-lg ring-1 ring-foreground/6 w-12 h-8 px-2 py-1 touch-manipulation active:scale-95 hover:opacity-80 transition-all"
                     >
                       <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect y="1" width="20" height="2" rx="1" fill="currentColor" />

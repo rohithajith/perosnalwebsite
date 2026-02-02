@@ -5,18 +5,22 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 type ThemeToggleProps = {
-  size?: "normal" | "large";
+  size?: "normal" | "medium" | "large";
 };
 
 export function ThemeToggle({ size = "normal" }: ThemeToggleProps) {
   const { theme, setTheme } = useTheme();
 
+  const sizeClasses = size === "large" ? "w-12 h-12" : size === "medium" ? "w-11 h-11" : "w-10 h-8";
+  const iconSize = size === "large" ? "h-6 w-6" : size === "medium" ? "h-5 w-5" : "h-4 w-4";
+
   return (
     <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className={`relative inline-flex items-center justify-center rounded-full transition-colors focus:outline-none ${
-        size === "large" ? "w-12 h-12" : "w-10 h-8"
-      }`}
+      onClick={(e) => {
+        e.stopPropagation();
+        setTheme(theme === "dark" ? "light" : "dark");
+      }}
+      className={`relative inline-flex items-center justify-center rounded-full transition-colors focus:outline-none ${sizeClasses}`}
       aria-label="Toggle theme"
       title="Toggle theme"
     >
@@ -25,16 +29,16 @@ export function ThemeToggle({ size = "normal" }: ThemeToggleProps) {
 
       {/* Sun icon (light) */}
       <Sun
-        className={`transition-transform transition-opacity ${
-          size === "large" ? "h-6 w-6" : "h-4 w-4"
-        } ${theme === "dark" ? "opacity-0 scale-90" : "opacity-100 scale-100"}`}
+        className={`transition-transform transition-opacity ${iconSize} ${
+          theme === "dark" ? "opacity-0 scale-90" : "opacity-100 scale-100"
+        }`}
       />
 
       {/* Moon icon (dark) */}
       <Moon
-        className={`absolute transition-transform transition-opacity ${
-          size === "large" ? "h-6 w-6" : "h-4 w-4"
-        } ${theme === "dark" ? "opacity-100 scale-100" : "opacity-0 scale-90"}`}
+        className={`absolute transition-transform transition-opacity ${iconSize} ${
+          theme === "dark" ? "opacity-100 scale-100" : "opacity-0 scale-90"
+        }`}
       />
 
       <span className="sr-only">Toggle theme</span>

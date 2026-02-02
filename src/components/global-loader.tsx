@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 
-export default function GlobalLoader(): JSX.Element {
+export default function GlobalLoader() {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {

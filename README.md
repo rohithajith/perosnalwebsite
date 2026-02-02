@@ -32,3 +32,21 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new).
+
+## Environment variables (local & Cloudflare)
+
+- Copy `.env.example` to `.env.local` (or `.env`) and fill in your secret values.
+- The repository's `.gitignore` already excludes `.env*` so your secrets won't be committed by accident.
+
+Example:
+
+```bash
+cp .env.example .env.local
+# then edit .env.local and fill in the values
+```
+
+For Cloudflare Pages:
+- Add the same variables in the Pages project's dashboard under **Settings → Environment variables** so the build and runtime have access to them.
+- For Worker secrets used by `wrangler`, you can also use the CLI: `wrangler secret put NAME` (this stores the secret for Workers).
+
+Security note: never paste secret keys into public issue trackers or share them in plaintext. Use environment variables and Cloudflare's dashboard or secret APIs to keep them safe.
