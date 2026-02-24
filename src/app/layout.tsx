@@ -42,9 +42,9 @@ export const metadata: Metadata = {
   },
   description: SITE_CONFIG.description,
   icons: {
-    icon: "/minilogos.png",
-    shortcut: "/minilogos.png",
-    apple: "/minilogos.png",
+    icon: "/minilogos-favicon.png",
+    shortcut: "/minilogos-favicon.png",
+    apple: "/minilogos-favicon.png",
   },
 };
 
@@ -61,16 +61,15 @@ export default function RootLayout({
         <GlobalLoader />
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
           <Navbar />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 pt-24 md:pt-28">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>
     </html>
   );
 }
-

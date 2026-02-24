@@ -3,13 +3,13 @@
 import { useForm, ValidationError } from '@formspree/react';
 
 export default function ContactPage() {
-  const [state, handleSubmit] = useForm("YOUR_FORMSPREE_ID"); // REPLACE WITH YOUR ID
+  const [state, handleSubmit] = useForm("xnjzdygz");
 
   if (state.succeeded) {
       return (
          <div className="mx-auto max-w-3xl px-6 py-12 text-center">
             <h1 className="text-3xl font-bold mb-4">Thanks for reaching out!</h1>
-            <p className="text-lg text-foreground">I'll get back to you soon.</p>
+            <p className="text-lg text-foreground">I&apos;ll get back to you soon.</p>
          </div>
       );
   }

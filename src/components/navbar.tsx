@@ -50,7 +50,7 @@ export function Navbar() {
   const trailingNavItems = aboutIndex >= 0 ? SITE_CONFIG.nav.slice(aboutIndex + 1) : [];
 
   return (
-    <header className="sticky top-5 z-40 w-full flex justify-center pointer-events-none">
+    <header className="fixed top-5 left-0 right-0 z-40 w-full flex justify-center pointer-events-none">
       <div className="mx-4 w-full max-w-4xl pointer-events-auto">
         {/* Wrapper group: default single pill; on hover children get their own pill styles */}
         <div
