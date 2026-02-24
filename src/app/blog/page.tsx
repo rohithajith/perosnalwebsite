@@ -1,7 +1,6 @@
 import { getSubstackPosts } from "@/lib/rss";
 import BlogList from "@/components/blog-list";
 
-export const revalidate = 3600;
 
 export default async function BlogPage() {
   const posts = await getSubstackPosts();

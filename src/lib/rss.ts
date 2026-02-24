@@ -1,4 +1,6 @@
 import Parser from "rss-parser";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { SITE_CONFIG } from "./constants";
 
 const parser = new Parser({
@@ -44,6 +46,14 @@ export async function getSubstackPosts(): Promise<Post[]> {
     });
   } catch (error) {
     console.error("Error fetching Substack RSS:", error);
-    return [];
+    try {
+      const cachePath = path.join(process.cwd(), "public", "posts.json");
+      const raw = await readFile(cachePath, "utf8");
+      const cachedPosts = JSON.parse(raw) as Post[];
+      return Array.isArray(cachedPosts) ? cachedPosts : [];
+    } catch (cacheError) {
+      console.error("Error reading cached posts.json:", cacheError);
+      return [];
+    }
   }
 }

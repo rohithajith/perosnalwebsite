@@ -3,7 +3,6 @@ import { getSubstackPosts, type Post } from "@/lib/rss";
 import { formatDate } from "@/lib/utils";
 import { SITE_CONFIG } from "@/lib/constants";
 
-export const revalidate = 3600;
 
 export default async function Home() {
   const posts = await getSubstackPosts();

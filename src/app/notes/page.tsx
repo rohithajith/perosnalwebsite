@@ -3,7 +3,6 @@ import { getSubstackPosts, type Post } from "@/lib/rss";
 import { formatDate } from "@/lib/utils";
 import NewsletterList from "@/components/newsletter-list";
 
-export const revalidate = 3600;
 
 export default async function NotesPage() {
   const posts = await getSubstackPosts();
@@ -26,4 +25,3 @@ export default async function NotesPage() {
 
   return <NewsletterList groupedPosts={groupedPosts} keys={keys} />;
 }
-

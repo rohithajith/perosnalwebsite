@@ -6,7 +6,7 @@ import { Metadata } from "next";
 import BackToBlog from "@/components/back-to-blog";
 import { Suspense } from "react";
 
-export const revalidate = 3600;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
    const posts = await getSubstackPosts();
