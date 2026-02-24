@@ -1,109 +1,165 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import { SITE_CONFIG } from "@/lib/constants";
 import { ThemeToggle } from "./theme-toggle";
 
 export default function MobileNav({ onClose }: { onClose: () => void }) {
   const dialogRef = useRef<HTMLDivElement | null>(null);
+  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();
+  const { resolvedTheme, setTheme } = useTheme();
+  const [open, setOpen] = useState(false);
+  const closeTimeoutRef = useRef<number | null>(null);
+
+  const toggleTheme = React.useCallback(() => {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  }, [resolvedTheme, setTheme]);
+
+  const requestClose = React.useCallback(() => {
+    setOpen(false);
+    if (closeTimeoutRef.current) window.clearTimeout(closeTimeoutRef.current);
+    closeTimeoutRef.current = window.setTimeout(() => {
+      onClose();
+      closeTimeoutRef.current = null;
+    }, 220);
+  }, [onClose]);
 
   useEffect(() => {
-    // Lock body scroll when menu is open - simple approach
     const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
+    const id = requestAnimationFrame(() => {
+      setOpen(true);
+      closeBtnRef.current?.focus();
+    });
 
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") requestClose();
     }
     document.addEventListener("keydown", onKey);
 
     return () => {
+      cancelAnimationFrame(id);
       document.body.style.overflow = originalOverflow;
       document.removeEventListener("keydown", onKey);
+      if (closeTimeoutRef.current) {
+        window.clearTimeout(closeTimeoutRef.current);
+        closeTimeoutRef.current = null;
+      }
     };
-  }, [onClose]);
-
-  // NOTE: aggressive focus-trapping caused interactive issues on mobile.
-  // For now we rely on an initial focus target and ESC-to-close; a full
-  // focus-trap can be added later using a well-tested library.
+  }, [requestClose]);
 
   return (
-    <div className="fixed inset-0 z-[9999]" role="dialog" aria-modal="true">
+    <div className="fixed inset-0 z-[9999]" role="dialog" aria-modal="true" aria-label="Mobile navigation menu">
       {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-black/40" 
+      <button
+        type="button"
+        aria-label="Close menu"
+        className={`absolute inset-0 transition-all duration-200 ease-out motion-reduce:transition-none ${
+          open
+            ? "bg-black/20 dark:bg-black/40 backdrop-blur-md opacity-100"
+            : "bg-black/0 backdrop-blur-0 opacity-0"
+        }`}
         onClick={(e) => {
           e.stopPropagation();
-          console.log('Backdrop clicked');
-          onClose();
+          requestClose();
         }}
-        style={{ pointerEvents: 'auto' }}
+        style={{ pointerEvents: "auto" }}
       />
-      
-      {/* Menu Panel */}
+
+      {/* Floating iOS-style menu panel */}
       <div
         ref={dialogRef}
-        className="absolute right-0 top-0 bottom-0 w-80 max-w-full bg-background text-foreground p-6 shadow-xl animate-slide-in-from-right overflow-y-auto"
-        style={{ pointerEvents: 'auto' }}
+        className={`absolute right-4 top-20 w-[min(22rem,calc(100vw-2rem))] overflow-hidden rounded-3xl border border-black/10 bg-white text-black shadow-[0_20px_60px_rgba(0,0,0,0.16)] ring-1 ring-white/60 supports-[backdrop-filter]:backdrop-blur-3xl dark:border-white/10 dark:bg-zinc-900/72 dark:text-white dark:ring-white/5 dark:shadow-[0_24px_70px_rgba(0,0,0,0.45)] transition-all duration-220 ease-out motion-reduce:transition-none ${
+          open ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-3 scale-95"
+        }`}
+        style={{ pointerEvents: "auto", transformOrigin: "top right" }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center">
-            <img src="/minilogos.png" alt="logo" className="w-10 h-10 object-contain" />
-            <span className="ml-3 font-semibold">{SITE_CONFIG.name}</span>
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-8 -right-8 h-24 w-24 rounded-full bg-white/50 blur-2xl dark:bg-white/10" />
+          <div className="absolute -bottom-10 -left-10 h-28 w-28 rounded-full bg-sky-200/30 blur-2xl dark:bg-sky-400/10" />
+        </div>
+
+        <div className="relative p-4">
+          <div className="flex items-center justify-between px-1">
+            <div className="flex items-center min-w-0">
+              <img src="/minilogos-favicon.png" alt="logo" className="w-9 h-9 object-contain rounded-lg" />
+              <span className="ml-3 font-semibold text-base truncate text-black dark:text-white">{SITE_CONFIG.name}</span>
+            </div>
+            <button
+              ref={closeBtnRef}
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                requestClose();
+              }}
+              aria-label="Close menu"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/5 text-black shadow-sm ring-1 ring-black/10 transition hover:opacity-80 dark:bg-white/10 dark:text-white dark:ring-white/10"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <path d="M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
           </div>
-          <button 
-            type="button" 
+
+          <div className="mt-4 rounded-2xl border border-black/10 bg-white p-2 shadow-inner shadow-white/70 dark:border-white/10 dark:bg-white/5 dark:shadow-none">
+            <nav className="flex flex-col gap-1">
+              {SITE_CONFIG.nav.map((item, index) => (
+                <button
+                  key={item.href}
+                  onClick={() => {
+                    router.push(item.href);
+                    requestClose();
+                  }}
+                  className="group relative flex items-center justify-between rounded-xl px-3 py-3 text-left text-black transition hover:bg-black/5 active:scale-[0.99] dark:text-white dark:hover:bg-white/5"
+                >
+                  <span className="text-base font-medium">{item.label}</span>
+                  <span className="text-black/40 transition group-hover:translate-x-0.5 dark:text-white/45">›</span>
+                  {index < SITE_CONFIG.nav.length - 1 && (
+                    <span className="pointer-events-none absolute bottom-0 left-3 right-3 h-px bg-black/10 dark:bg-white/8" />
+                  )}
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          <div className="mt-4">
+            <button
+              onClick={() => {
+                router.push("/contact");
+                requestClose();
+              }}
+              className="block w-full text-center rounded-2xl py-3.5 bg-black text-white font-medium shadow-lg shadow-black/25 hover:opacity-90 active:scale-[0.99] transition-all dark:bg-white dark:text-black"
+            >
+              Get in touch
+            </button>
+          </div>
+
+          <div
+            className="mt-4 rounded-2xl border border-black/10 bg-white px-4 py-3 shadow-inner shadow-white/60 transition hover:bg-black/5 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10 dark:shadow-none"
+            role="button"
+            tabIndex={0}
+            aria-label="Toggle theme"
             onClick={(e) => {
               e.stopPropagation();
-              onClose();
+              toggleTheme();
             }}
-            aria-label="Close menu" 
-            className="p-2 hover:opacity-70 active:opacity-50 transition-opacity rounded-full hover:bg-foreground/10"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              <path d="M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </button>
-        </div>
-
-        <nav className="flex flex-col gap-4">
-          {SITE_CONFIG.nav.map((item) => (
-            <button
-              key={item.href}
-              onClick={() => {
-                console.log('Navigating to:', item.href);
-                router.push(item.href);
-                setTimeout(() => onClose(), 100);
-              }}
-              className="text-lg font-medium hover:opacity-70 active:opacity-50 transition-opacity py-3 px-2 rounded text-left w-full cursor-pointer"
-            >
-              {item.label}
-            </button>
-          ))}
-        </nav>
-
-        <div className="mt-6">
-          <button 
-            onClick={() => {
-              console.log('Navigating to: /contact');
-              router.push('/contact');
-              setTimeout(() => onClose(), 100);
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleTheme();
+              }
             }}
-            className="block w-full text-center rounded-full py-3 bg-foreground text-background font-medium hover:opacity-90 active:scale-95 transition-all cursor-pointer"
           >
-            Get in touch
-          </button>
-        </div>
-
-        {/* Theme Toggle */}
-        <div className="mt-6 pt-6 border-t border-foreground/10">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">Theme</span>
-            <ThemeToggle size="medium" />
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-black dark:text-white">Theme</span>
+              <ThemeToggle size="medium" />
+            </div>
           </div>
         </div>
       </div>
