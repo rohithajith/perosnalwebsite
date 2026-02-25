@@ -1,8 +1,5 @@
-import Link from "next/link";
 import { getSubstackPosts, type Post } from "@/lib/rss";
-import { formatDate } from "@/lib/utils";
 import NewsletterList from "@/components/newsletter-list";
-
 
 export default async function NotesPage() {
   const posts = await getSubstackPosts();

@@ -20,27 +20,19 @@ export default function NewsletterList({ groupedPosts, keys }: Props) {
         if (!Number.isNaN(y)) {
           window.scrollTo({ top: y, behavior: "auto" });
         }
-      }
-    } catch (e) {
-      // ignore
-    }
-
-    // Cleanup: clear scroll data when leaving the newsletter page
-    return () => {
-      try {
         sessionStorage.removeItem("newsletter-scroll");
         sessionStorage.removeItem("newsletter-scroll-source");
-      } catch (e) {
-        // ignore
       }
-    };
+    } catch {
+      // ignore
+    }
   }, []);
 
   const saveScroll = () => {
     try {
       sessionStorage.setItem("newsletter-scroll", String(window.scrollY || window.pageYOffset || 0));
       sessionStorage.setItem("newsletter-scroll-source", "newsletter");
-    } catch (e) {
+    } catch {
       // ignore
     }
   };

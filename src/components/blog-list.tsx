@@ -19,27 +19,19 @@ export default function BlogList({ posts }: Props) {
         if (!Number.isNaN(y)) {
           window.scrollTo({ top: y, behavior: "auto" });
         }
-      }
-    } catch (e) {
-      // ignore
-    }
-
-    // Cleanup: clear scroll data when leaving the blog page
-    return () => {
-      try {
         sessionStorage.removeItem("blog-scroll");
         sessionStorage.removeItem("blog-scroll-source");
-      } catch (e) {
-        // ignore
       }
-    };
+    } catch {
+      // ignore
+    }
   }, []);
 
   const saveScroll = () => {
     try {
       sessionStorage.setItem("blog-scroll", String(window.scrollY || window.pageYOffset || 0));
       sessionStorage.setItem("blog-scroll-source", "blog");
-    } catch (e) {
+    } catch {
       // ignore
     }
   };

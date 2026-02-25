@@ -10,20 +10,9 @@ export default function BackToBlog() {
   const backHref = referrer === "notes" ? "/notes" : "/blog";
   const backLabel = referrer === "notes" ? "Back to Newsletter" : "Back to Blog";
 
-  const handleClick = () => {
-    try {
-      // Clear scroll data before navigating away
-      sessionStorage.removeItem("blog-scroll");
-      sessionStorage.removeItem("blog-scroll-source");
-    } catch (e) {
-      // ignore
-    }
-  };
-
   return (
     <Link 
       href={backHref}
-      onClick={handleClick}
       className="inline-flex items-center text-sm text-foreground/70 hover:text-foreground mb-8 transition-colors"
     >
       <ArrowLeft className="mr-2 h-4 w-4" /> {backLabel}

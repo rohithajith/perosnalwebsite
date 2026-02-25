@@ -1,10 +1,14 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { SITE_CONFIG } from "@/lib/constants";
 import { ThemeToggle } from "./theme-toggle";
+
+const MENU_CLOSE_ANIMATION_MS = 220;
+const MENU_NAV_DELAY_MS = 120;
 
 export default function MobileNav({ onClose }: { onClose: () => void }) {
   const dialogRef = useRef<HTMLDivElement | null>(null);
@@ -13,6 +17,7 @@ export default function MobileNav({ onClose }: { onClose: () => void }) {
   const { resolvedTheme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
   const closeTimeoutRef = useRef<number | null>(null);
+  const navTimeoutRef = useRef<number | null>(null);
 
   const toggleTheme = React.useCallback(() => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
@@ -24,8 +29,21 @@ export default function MobileNav({ onClose }: { onClose: () => void }) {
     closeTimeoutRef.current = window.setTimeout(() => {
       onClose();
       closeTimeoutRef.current = null;
-    }, 220);
+    }, MENU_CLOSE_ANIMATION_MS);
   }, [onClose]);
+
+  const navigateAndClose = React.useCallback(
+    (href: string) => {
+      requestClose();
+      if (navTimeoutRef.current) window.clearTimeout(navTimeoutRef.current);
+      // Delay navigation slightly so the closing menu still captures the tap.
+      navTimeoutRef.current = window.setTimeout(() => {
+        router.push(href);
+        navTimeoutRef.current = null;
+      }, MENU_NAV_DELAY_MS);
+    },
+    [requestClose, router]
+  );
 
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
@@ -47,6 +65,10 @@ export default function MobileNav({ onClose }: { onClose: () => void }) {
       if (closeTimeoutRef.current) {
         window.clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = null;
+      }
+      if (navTimeoutRef.current) {
+        window.clearTimeout(navTimeoutRef.current);
+        navTimeoutRef.current = null;
       }
     };
   }, [requestClose]);
@@ -86,7 +108,7 @@ export default function MobileNav({ onClose }: { onClose: () => void }) {
         <div className="relative p-4">
           <div className="flex items-center justify-between px-1">
             <div className="flex items-center min-w-0">
-              <img src="/minilogos-favicon.png" alt="logo" className="w-9 h-9 object-contain rounded-lg" />
+              <Image src="/minilogos-favicon.png" alt="logo" width={36} height={36} className="w-9 h-9 object-contain rounded-lg" />
               <span className="ml-3 font-semibold text-base truncate text-black dark:text-white">{SITE_CONFIG.name}</span>
             </div>
             <button
@@ -111,9 +133,10 @@ export default function MobileNav({ onClose }: { onClose: () => void }) {
               {SITE_CONFIG.nav.map((item, index) => (
                 <button
                   key={item.href}
-                  onClick={() => {
-                    router.push(item.href);
-                    requestClose();
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    navigateAndClose(item.href);
                   }}
                   className="group relative flex items-center justify-between rounded-xl px-3 py-3 text-left text-black transition hover:bg-black/5 active:scale-[0.99] dark:text-white dark:hover:bg-white/5"
                 >
@@ -129,9 +152,10 @@ export default function MobileNav({ onClose }: { onClose: () => void }) {
 
           <div className="mt-4">
             <button
-              onClick={() => {
-                router.push("/contact");
-                requestClose();
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                navigateAndClose("/contact");
               }}
               className="block w-full text-center rounded-2xl py-3.5 bg-black text-white font-medium shadow-lg shadow-black/25 hover:opacity-90 active:scale-[0.99] transition-all dark:bg-white dark:text-black"
             >

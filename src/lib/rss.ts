@@ -21,28 +21,41 @@ export interface Post {
   categories: string[];
 }
 
+type SubstackFeedItem = Parser.Item & {
+  "content:encoded"?: string;
+};
+
 export async function getSubstackPosts(): Promise<Post[]> {
   const feedUrl = SITE_CONFIG.substack.feed || `https://${SITE_CONFIG.substack.username}.substack.com/feed`;
-  
+
   try {
     const feed = await parser.parseURL(feedUrl);
-    
-    return feed.items.map((item: any) => {
-      // Extract slug from link
-      // Link format: https://username.substack.com/p/slug-name
-      const url = new URL(item.link);
-      const slug = url.pathname.split("/").pop() || "";
 
-      return {
-        title: item.title,
-        link: item.link,
-        pubDate: item.pubDate,
-        content: item["content:encoded"] || item.content,
-        contentSnippet: item.contentSnippet || "",
-        slug,
-        guid: item.guid,
-        categories: item.categories || [],
-      };
+    return feed.items.flatMap((rawItem) => {
+      const item = rawItem as SubstackFeedItem;
+      const link = typeof item.link === "string" ? item.link : "";
+      if (!link) return [];
+
+      let slug = "";
+      try {
+        // Link format: https://username.substack.com/p/slug-name
+        slug = new URL(link).pathname.split("/").filter(Boolean).pop() || "";
+      } catch {
+        return [];
+      }
+
+      return [
+        {
+          title: item.title ?? "Untitled",
+          link,
+          pubDate: item.pubDate ?? "",
+          content: item["content:encoded"] || item.content || "",
+          contentSnippet: item.contentSnippet || "",
+          slug,
+          guid: item.guid ?? link,
+          categories: Array.isArray(item.categories) ? item.categories : [],
+        },
+      ];
     });
   } catch (error) {
     console.error("Error fetching Substack RSS:", error);

@@ -1,6 +1,6 @@
 import { SITE_CONFIG } from "@/lib/constants";
-import Link from "next/link";
 import { AwardsSection } from "@/components/awards-section";
+import Image from "next/image";
 
 export const metadata = {
   title: "Projects",
@@ -55,7 +55,7 @@ export default function ProjectsPage() {
         >
           <div className="w-full mb-6">
               <div className="w-20 h-20 rounded-lg bg-white flex items-center justify-center shadow-sm border border-gray-200 mb-4">
-                <img src="/adobe-express-file.png" alt="ReviewHelp logo" className="w-[76px] h-[76px] object-contain" />
+                <Image src="/adobe-express-file.png" alt="ReviewHelp logo" width={76} height={76} className="w-[76px] h-[76px] object-contain" />
               </div>
              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">ReviewHelp</h2>
              <p className="text-sm font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full mt-3 uppercase tracking-wider inline-block">Founder</p>

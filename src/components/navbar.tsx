@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import * as React from "react";
 import { ThemeToggle } from "./theme-toggle";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -19,6 +20,7 @@ export function Navbar() {
   const logoSrc = resolvedTheme === "dark" ? "/darkmodecut.png" : "/lightmode.png";
   const [showToggle, setShowToggle] = useState(false);
   const leaveTimerRef = useRef<number | null>(null);
+  const mobileCloseGuardUntilRef = useRef(0);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true));
@@ -44,10 +46,6 @@ export function Navbar() {
       }
     };
   }, []);
-
-  const aboutIndex = SITE_CONFIG.nav.findIndex((it) => it.href === "/about");
-  const mainNavItems = aboutIndex >= 0 ? SITE_CONFIG.nav.slice(0, aboutIndex + 1) : SITE_CONFIG.nav;
-  const trailingNavItems = aboutIndex >= 0 ? SITE_CONFIG.nav.slice(aboutIndex + 1) : [];
 
   return (
     <header className="fixed top-5 left-0 right-0 z-40 w-full flex justify-center pointer-events-none">
@@ -78,7 +76,14 @@ export function Navbar() {
                   <div className="flex items-center pointer-events-auto">
                     {mounted && pathname && (
                       <Link href="/" className="flex items-center">
-                        <img src={logoSrc} alt={`${SITE_CONFIG.name} Logo`} style={{ height: 64 }} className="w-auto" />
+                        <Image
+                          src={logoSrc}
+                          alt={`${SITE_CONFIG.name} Logo`}
+                          width={240}
+                          height={64}
+                          priority
+                          className="h-16 w-auto"
+                        />
                       </Link>
                     )}
                   </div>
@@ -88,7 +93,10 @@ export function Navbar() {
                     {/* Mobile hamburger: visible on small screens only - render first */}
                     <button
                       type="button"
-                      onClick={() => setMobileOpen(true)}
+                      onClick={() => {
+                        if (Date.now() < mobileCloseGuardUntilRef.current) return;
+                        setMobileOpen(true);
+                      }}
                       aria-label="Open menu"
                       className="md:hidden inline-flex items-center justify-center rounded-full bg-background/60 supports-[backdrop-filter]:backdrop-blur-lg ring-1 ring-foreground/6 w-12 h-8 px-2 py-1 touch-manipulation active:scale-95 hover:opacity-80 transition-all"
                     >
@@ -152,7 +160,14 @@ export function Navbar() {
       </div>
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
       {/* Mobile slide-over menu */}
-      {mobileOpen && <MobileNav onClose={() => setMobileOpen(false)} />}
+      {mobileOpen && (
+        <MobileNav
+          onClose={() => {
+            mobileCloseGuardUntilRef.current = Date.now() + 400;
+            setMobileOpen(false);
+          }}
+        />
+      )}
     </header>
   );
 }

@@ -1,17 +1,19 @@
 "use client";
 
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 export default function GlobalLoader() {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    let timeout = window.setTimeout(() => setVisible(false), 3000);
+    const hideTimeout = window.setTimeout(() => setVisible(false), 3000);
+    let fadeTimeout: number | null = null;
 
     function onLoad() {
-      window.clearTimeout(timeout);
+      window.clearTimeout(hideTimeout);
       // small delay so fade-out animation is visible
-      setTimeout(() => setVisible(false), 200);
+      fadeTimeout = window.setTimeout(() => setVisible(false), 200);
     }
 
     if (document.readyState === "complete") {
@@ -22,14 +24,17 @@ export default function GlobalLoader() {
 
     return () => {
       window.removeEventListener("load", onLoad);
-      window.clearTimeout(timeout);
+      window.clearTimeout(hideTimeout);
+      if (fadeTimeout) {
+        window.clearTimeout(fadeTimeout);
+      }
     };
   }, []);
 
   return (
     <div className={`global-loader ${visible ? "" : "hidden"}`} aria-hidden={!visible}>
       <div className="loader-inner">
-        <img src="/abstract-isometric-loader-1.gif" alt="Loading" />
+        <Image src="/abstract-isometric-loader-1.gif" alt="Loading" width={240} height={240} unoptimized />
       </div>
     </div>
   );

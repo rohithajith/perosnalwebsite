@@ -9,6 +9,13 @@ interface SearchResult {
   href: string;
 }
 
+interface CachedPost {
+  title?: string;
+  contentSnippet?: string;
+  description?: string;
+  slug?: string;
+}
+
 interface SearchModalProps {
   open: boolean;
   onClose: () => void;
@@ -28,12 +35,17 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
         setLoading(true);
         const res = await fetch("/posts.json");
         if (res.ok) {
-          const posts = await res.json();
-          cacheRef.current = posts.map((post: any) => ({
-            title: post.title,
-            description: post.contentSnippet || post.description || "",
-            href: `/blog/${post.slug}?referrer=search`,
-          }));
+          const posts = (await res.json()) as unknown;
+          if (Array.isArray(posts)) {
+            cacheRef.current = posts
+              .filter((post): post is CachedPost => typeof post === "object" && post !== null)
+              .map((post) => ({
+                title: post.title ?? "Untitled",
+                description: post.contentSnippet || post.description || "",
+                href: `/blog/${post.slug ?? ""}?referrer=search`,
+              }))
+              .filter((post) => post.href !== "/blog/?referrer=search");
+          }
         }
       } catch (e) {
         console.error("Failed to fetch posts:", e);
@@ -50,7 +62,8 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
   useEffect(() => {
     if (open) {
       setQuery("");
-      setTimeout(() => inputRef.current?.focus(), 100);
+      const focusTimeout = window.setTimeout(() => inputRef.current?.focus(), 100);
+      return () => window.clearTimeout(focusTimeout);
     }
   }, [open]);
 
@@ -163,4 +176,3 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
     </div>
   );
 }
-
