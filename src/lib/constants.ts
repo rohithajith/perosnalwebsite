@@ -43,6 +43,20 @@ export const SITE_CONFIG = {
       description: "Intelligent document processing pipeline extracting structured data from unstructured documents for automated workflows.",
       url: "#",
     },
+    {
+      title: "Hoteldevbox",
+      role: "Founder",
+      emoji: "🤖",
+      description: "AI-powered development platform for hotels that acts as a virtual software and operations team. Operators describe needs in plain language, and the system helps build, deploy, and manage tailored tools like dynamic pricing agents, guest communication workflows, review monitoring, revenue forecasting, website fixes, and operational dashboards. It combines hospitality-specific context with AI planning, code generation, deployment, and monitoring, with approval safeguards for critical changes.",
+      url: "#",
+    },
+    {
+      title: "Offshore Logistics MCP Server",
+      role: "Builder",
+      emoji: "⚓",
+      description: "Designed and built a domain-specific MCP server for offshore maritime logistics as a structured interface layer between operational systems and AI. It exposes logistics and supply-chain context through MCP tools and resources, enabling AI models and agents to use real operational data without brittle one-off integrations. Supports inventory visibility, shipment tracking, supplier and PO context, transfer planning, and stock reservation with auditability.",
+      url: "#",
+    },
   ],
   blogs: [
     {
