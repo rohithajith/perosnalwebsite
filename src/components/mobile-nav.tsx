@@ -8,7 +8,6 @@ import { SITE_CONFIG } from "@/lib/constants";
 import { ThemeToggle } from "./theme-toggle";
 
 const MENU_CLOSE_ANIMATION_MS = 220;
-const MENU_NAV_DELAY_MS = 120;
 
 export default function MobileNav({ onClose }: { onClose: () => void }) {
   const dialogRef = useRef<HTMLDivElement | null>(null);
@@ -17,7 +16,6 @@ export default function MobileNav({ onClose }: { onClose: () => void }) {
   const { resolvedTheme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
   const closeTimeoutRef = useRef<number | null>(null);
-  const navTimeoutRef = useRef<number | null>(null);
 
   const toggleTheme = React.useCallback(() => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
@@ -34,15 +32,10 @@ export default function MobileNav({ onClose }: { onClose: () => void }) {
 
   const navigateAndClose = React.useCallback(
     (href: string) => {
-      requestClose();
-      if (navTimeoutRef.current) window.clearTimeout(navTimeoutRef.current);
-      // Delay navigation slightly so the closing menu still captures the tap.
-      navTimeoutRef.current = window.setTimeout(() => {
-        router.push(href);
-        navTimeoutRef.current = null;
-      }, MENU_NAV_DELAY_MS);
+      router.push(href);
+      onClose();
     },
-    [requestClose, router]
+    [onClose, router]
   );
 
   useEffect(() => {
@@ -65,10 +58,6 @@ export default function MobileNav({ onClose }: { onClose: () => void }) {
       if (closeTimeoutRef.current) {
         window.clearTimeout(closeTimeoutRef.current);
         closeTimeoutRef.current = null;
-      }
-      if (navTimeoutRef.current) {
-        window.clearTimeout(navTimeoutRef.current);
-        navTimeoutRef.current = null;
       }
     };
   }, [requestClose]);
@@ -133,6 +122,7 @@ export default function MobileNav({ onClose }: { onClose: () => void }) {
               {SITE_CONFIG.nav.map((item, index) => (
                 <button
                   key={item.href}
+                  type="button"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -152,6 +142,7 @@ export default function MobileNav({ onClose }: { onClose: () => void }) {
 
           <div className="mt-4">
             <button
+              type="button"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
