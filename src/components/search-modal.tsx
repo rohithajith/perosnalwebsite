@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Search, FileText, Loader } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface SearchResult {
   title: string;
@@ -14,6 +14,7 @@ interface CachedPost {
   contentSnippet?: string;
   description?: string;
   slug?: string;
+  link?: string;
 }
 
 interface SearchModalProps {
@@ -22,11 +23,36 @@ interface SearchModalProps {
 }
 
 export function SearchModal({ open, onClose }: SearchModalProps) {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const cacheRef = useRef<SearchResult[]>([]);
+
+  const toBlogHref = useCallback((post: CachedPost) => {
+    let slug = (post.slug || "").trim();
+
+    // Fallback: derive slug from canonical Substack link when slug is missing.
+    if (!slug && post.link) {
+      try {
+        const pathname = new URL(post.link).pathname;
+        slug = pathname.split("/").filter(Boolean).pop() || "";
+      } catch {
+        slug = "";
+      }
+    }
+
+    return slug ? `/blog/${encodeURIComponent(slug)}/?referrer=search` : "";
+  }, []);
+
+  const handleResultSelect = useCallback(
+    (href: string) => {
+      onClose();
+      router.push(href);
+    },
+    [onClose, router]
+  );
 
   // Fetch all blog posts once on mount
   useEffect(() => {
@@ -42,9 +68,9 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
               .map((post) => ({
                 title: post.title ?? "Untitled",
                 description: post.contentSnippet || post.description || "",
-                href: `/blog/${post.slug ?? ""}?referrer=search`,
+                href: toBlogHref(post),
               }))
-              .filter((post) => post.href !== "/blog/?referrer=search");
+              .filter((post) => post.href.length > 0);
           }
         }
       } catch (e) {
@@ -57,7 +83,7 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
     if (open && cacheRef.current.length === 0) {
       fetchPosts();
     }
-  }, [open]);
+  }, [open, toBlogHref]);
 
   useEffect(() => {
     if (open) {
@@ -121,7 +147,8 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
           {loading && <Loader className="w-4 h-4 text-foreground/60 animate-spin" />}
           {!loading && (
             <button
-              className="text-xs text-foreground/60 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded"
+              type="button"
+              className="text-xs text-gray-700 dark:text-gray-300 bg-white border border-gray-300 dark:border-gray-700 dark:bg-gray-800 px-2 py-1 rounded"
               onClick={onClose}
             >
               ESC
@@ -150,11 +177,11 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
                 Blogs ({results.length})
               </div>
               {results.map((item, idx) => (
-                <Link
+                <button
+                  type="button"
                   key={`blog-${idx}`}
-                  href={item.href}
-                  onClick={onClose}
-                  className="flex items-start gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  onClick={() => handleResultSelect(item.href)}
+                  className="w-full text-left flex items-start gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 >
                   <span className="mt-1 text-blue-500">
                     <FileText className="w-4 h-4" />
@@ -167,7 +194,7 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
                       {item.description || "No description available"}
                     </div>
                   </div>
-                </Link>
+                </button>
               ))}
             </div>
           )}

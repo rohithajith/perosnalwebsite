@@ -59,6 +59,20 @@ export default function AboutPage() {
             My specialization lies in <strong>full-stack AI agent architectures, LLMs, and intelligent product automation</strong>. 
             I thrive on igniting innovation through cutting-edge technology.
           </p>
+
+          <h3 className="text-foreground mt-8 mb-4 font-serif text-2xl">What I Do</h3>
+          <p>
+            I engineer applied AI systems that combine large language models, retrieval pipelines, orchestration layers,
+            and backend services to support real-world business operations. My work includes building agentic workflows,
+            integrating AI into existing software environments, and designing systems that can process context, make
+            structured decisions, and trigger downstream actions across operational pipelines.
+          </p>
+          <p>
+            Technically, I work across LLM application development, RAG architectures, workflow orchestration, API
+            integration, backend service design, prompt engineering, and full-stack delivery. I am particularly interested
+            in systems where AI is not used as a simple chatbot layer, but as an operational component that can interact
+            with internal tools, business logic, and human workflows in a controlled and useful way.
+          </p>
         </div>
       </div>
       
