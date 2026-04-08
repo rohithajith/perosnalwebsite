@@ -181,7 +181,7 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
                   type="button"
                   key={`blog-${idx}`}
                   onClick={() => handleResultSelect(item.href)}
-                  className="w-full text-left flex items-start gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="w-full appearance-none bg-transparent text-left flex items-start gap-3 px-3 py-2 rounded-lg transition-colors text-gray-900 dark:text-gray-100 hover:bg-blue-50 focus-visible:bg-blue-50 active:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300/60 dark:hover:bg-slate-800/70 dark:focus-visible:bg-slate-800/70 dark:active:bg-slate-700/80 dark:focus-visible:ring-slate-500/60"
                 >
                   <span className="mt-1 text-blue-500">
                     <FileText className="w-4 h-4" />
