@@ -126,7 +126,7 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] bg-black/50 backdrop-blur-sm pointer-events-auto"
       onClick={onClose}
     >
       <div
@@ -148,7 +148,7 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
           {!loading && (
             <button
               type="button"
-              className="text-xs text-gray-700 dark:text-gray-300 bg-white border border-gray-300 dark:border-gray-700 dark:bg-gray-800 px-2 py-1 rounded"
+              className="appearance-none text-xs text-gray-700 dark:text-gray-300 bg-gray-100 hover:bg-gray-200 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 px-2 py-1 rounded transition-colors"
               onClick={onClose}
             >
               ESC
