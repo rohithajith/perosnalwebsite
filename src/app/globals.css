@@ -2,23 +2,87 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-  --background: #ffffff;
+  --background: #f4f4f1;
   --foreground: #171717;
+  --muted-foreground: #71717a;
+  --ra-wallpaper-bg: #0a0a0a;
+  --ra-btn-bg:
+    linear-gradient(180deg, rgba(16, 17, 20, 0.72), rgba(8, 8, 10, 0.88)),
+    url("/assets/compositor-sketch-far.png") center / 280px 280px repeat,
+    radial-gradient(
+      ellipse 78% 72% at 50% 48%,
+      rgba(20, 21, 24, 0.55) 0%,
+      rgba(12, 12, 14, 0.85) 64%,
+      rgba(8, 8, 10, 0.98) 100%
+    ),
+    var(--ra-wallpaper-bg);
+  --ra-btn-bg-hover:
+    linear-gradient(180deg, rgba(26, 28, 34, 0.66), rgba(10, 10, 12, 0.84)),
+    url("/assets/compositor-sketch-far.png") center / 280px 280px repeat,
+    radial-gradient(
+      ellipse 78% 72% at 50% 48%,
+      rgba(24, 26, 30, 0.6) 0%,
+      rgba(14, 14, 17, 0.86) 64%,
+      rgba(8, 8, 10, 0.98) 100%
+    ),
+    var(--ra-wallpaper-bg);
+  --ra-btn-fg: #ededed;
+  --ra-btn-border: rgba(237, 237, 237, 0.22);
+  --ra-btn-border-hover: rgba(237, 237, 237, 0.45);
 }
 
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+  --muted-foreground: #a1a1aa;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-serif: var(--font-serif);
   
   --animate-spin-slow: spin 18s linear infinite;
+}
+
+@layer components {
+  .ra-portal-btn,
+  button:not([data-overlay-backdrop]) {
+    background: var(--ra-btn-bg);
+    color: var(--ra-btn-fg);
+    border: 1px solid var(--ra-btn-border);
+    cursor: pointer;
+    transition:
+      background 150ms ease-out,
+      border-color 150ms ease-out,
+      box-shadow 150ms ease-out,
+      transform 150ms ease-out;
+  }
+
+  .ra-portal-btn:hover:not(:disabled),
+  button:not([data-overlay-backdrop]):hover:not(:disabled) {
+    background: var(--ra-btn-bg-hover);
+    border-color: var(--ra-btn-border-hover);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+  }
+
+  .ra-portal-btn:active:not(:disabled),
+  button:not([data-overlay-backdrop]):active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  .ra-portal-btn:focus-visible,
+  button:not([data-overlay-backdrop]):focus-visible {
+    outline: 2px solid CanvasText;
+    outline-offset: 3px;
+  }
+}
+
+.dark main {
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
 }
 
 body {

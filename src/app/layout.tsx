@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import GlobalLoader from "@/components/global-loader";
+import { PortalSketchBackdrop } from "@/components/portal-sketch-backdrop";
 import { SITE_CONFIG } from "@/lib/constants";
 
 const geistSans = Geist({
@@ -61,12 +62,14 @@ export default function RootLayout({
         <GlobalLoader />
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
+          storageKey="ra-portal-theme"
           enableSystem={false}
           disableTransitionOnChange
         >
+          <PortalSketchBackdrop />
           <Navbar />
-          <main className="flex-1 pt-24 md:pt-28">{children}</main>
+          <main className="relative z-10 flex-1 pt-24 md:pt-28">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>

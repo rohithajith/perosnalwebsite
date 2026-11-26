@@ -148,7 +148,7 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
           {!loading && (
             <button
               type="button"
-              className="appearance-none text-xs text-gray-700 dark:text-gray-300 bg-gray-100 hover:bg-gray-200 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 px-2 py-1 rounded transition-colors"
+              className="ra-portal-btn appearance-none text-xs px-2.5 py-1 rounded-md"
               onClick={onClose}
             >
               ESC
@@ -181,16 +181,16 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
                   type="button"
                   key={`blog-${idx}`}
                   onClick={() => handleResultSelect(item.href)}
-                  className="w-full appearance-none bg-transparent text-left flex items-start gap-3 px-3 py-2 rounded-lg transition-colors text-gray-900 dark:text-gray-100 hover:bg-blue-50 focus-visible:bg-blue-50 active:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300/60 dark:hover:bg-slate-800/70 dark:focus-visible:bg-slate-800/70 dark:active:bg-slate-700/80 dark:focus-visible:ring-slate-500/60"
+                  className="ra-portal-btn w-full appearance-none text-left flex items-start gap-3 px-3 py-2.5 mb-1.5 last:mb-0 rounded-lg"
                 >
-                  <span className="mt-1 text-blue-500">
+                  <span className="mt-1 text-blue-400">
                     <FileText className="w-4 h-4" />
                   </span>
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-foreground truncate">
+                    <div className="font-medium text-white truncate">
                       {item.title}
                     </div>
-                    <div className="text-sm text-foreground/70 line-clamp-2">
+                    <div className="text-sm text-zinc-300 line-clamp-2">
                       {item.description || "No description available"}
                     </div>
                   </div>

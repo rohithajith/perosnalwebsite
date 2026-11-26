@@ -44,7 +44,7 @@ export default function NewsletterList({ groupedPosts, keys }: Props) {
         <p className="text-xl text-foreground max-w-2xl">
           Insights on enterprise AI, automation systems, and emerging tools that transform business operations. Subscribe for practical guides, real-world implementations, and strategic analysis delivered to your inbox.
         </p>
-        <a href="https://aiintegrationsforbiz.substack.com/subscribe?next=https%3A%2F%2Fsubstack.com%2F%40integrationswithai%3F&utm_source=profile-page&utm_medium=web&utm_campaign=substack_profile&just_signed_up=true" className="inline-block w-full sm:w-auto bg-orange-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors mt-6">
+        <a href="https://aiintegrationsforbiz.substack.com/subscribe?next=https%3A%2F%2Fsubstack.com%2F%40integrationswithai%3F&utm_source=profile-page&utm_medium=web&utm_campaign=substack_profile&just_signed_up=true" className="ra-portal-btn inline-flex items-center justify-center w-full sm:w-auto font-semibold py-3 px-6 rounded-lg mt-6">
           Subscribe
         </a>
       </div>

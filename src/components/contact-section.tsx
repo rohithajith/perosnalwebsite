@@ -174,7 +174,7 @@ export function ContactSection() {
            <button 
              type="submit" 
              disabled={status === "sending"}
-             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+             className="ra-portal-btn w-full font-medium py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
            >
              {status === "sending" ? "Sending..." : "Send Message"}
            </button>

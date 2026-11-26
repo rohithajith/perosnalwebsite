@@ -1,0 +1,366 @@
+/* ==========================================================================
+   KINETIC CHALKBOARD SKETCH BACKDROP — 100% GPU COMPOSITED (120fps)
+   Pre-baked 2x-supersampled transparent RGBA PNG layers + individual sketch
+   sprites animating strictly transform & opacity on the compositor thread.
+   ========================================================================== */
+
+.kinetic-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: clip;
+  background-color: #0a0a0a;
+  pointer-events: none;
+}
+
+.chalkboard-surface {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 78% 72% at 50% 48%,
+      rgba(20, 21, 24, 0.55) 0%,
+      rgba(12, 12, 14, 0.85) 64%,
+      rgba(8, 8, 10, 0.98) 100%
+    );
+}
+
+html:not(.dark) .kinetic-backdrop {
+  background-color: #f4f4f1;
+}
+
+html:not(.dark) .chalkboard-surface {
+  background:
+    radial-gradient(
+      ellipse 78% 72% at 50% 48%,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(244, 244, 241, 0.82) 64%,
+      rgba(236, 236, 232, 0.96) 100%
+    );
+}
+
+html:not(.dark) .sketch-plane-img,
+html:not(.dark) .sketch-sprite-img {
+  filter: invert(0.88);
+  opacity: 0.42;
+}
+
+.kinetic-cover-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100vw, calc(100vh * 1024 / 621));
+  height: max(100vh, calc(100vw * 621 / 1024));
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.sketch-quad {
+  position: absolute;
+  width: 128.90625%;
+  height: 212.56039%;
+  user-select: none;
+  pointer-events: none;
+  backface-visibility: hidden;
+}
+
+.anchor-left {
+  left: -9.7754%;
+  top: 91.4654%;
+}
+
+.anchor-right {
+  left: 109.6777%;
+  top: 8.5346%;
+}
+
+.sketch-rotator {
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .kinetic-backdrop.is-smooth-composited .sketch-rotator {
+    transition: transform 1550ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+.sketch-plane-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  pointer-events: none;
+  will-change: transform;
+}
+
+@keyframes sk-continuous-cw {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sk-continuous-ccw {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .kinetic-backdrop.is-smooth-composited .sketch-spin-cw {
+    animation: sk-continuous-cw 135s linear infinite;
+  }
+
+  .kinetic-backdrop.is-smooth-composited .sketch-spin-ccw {
+    animation: sk-continuous-ccw 108s linear infinite;
+  }
+}
+
+/* Stationary directional vignette keeping central reading area crisp */
+.studio-vignette-chalk {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 46% 68% at 50% 50%,
+      rgba(10, 10, 10, 0.44) 0%,
+      rgba(10, 10, 10, 0.16) 72%,
+      rgba(10, 10, 10, 0) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(10, 10, 10, 0.35) 0%,
+      rgba(10, 10, 10, 0) 15%,
+      rgba(10, 10, 10, 0) 85%,
+      rgba(10, 10, 10, 0.38) 100%
+    );
+}
+
+html:not(.dark) .studio-vignette-chalk {
+  background:
+    radial-gradient(
+      ellipse 46% 68% at 50% 50%,
+      rgba(248, 248, 245, 0.56) 0%,
+      rgba(248, 248, 245, 0.22) 72%,
+      rgba(248, 248, 245, 0) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(244, 244, 241, 0.45) 0%,
+      rgba(244, 244, 241, 0) 15%,
+      rgba(244, 244, 241, 0) 85%,
+      rgba(244, 244, 241, 0.45) 100%
+    );
+}
+
+/* ==========================================================================
+   CONTINUOUSLY FLOATING / ORBITING INDIVIDUAL SKETCH ITEMS
+   ========================================================================== */
+.sketch-sprite-stage {
+  position: absolute;
+  inset: -4%;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .kinetic-backdrop.is-smooth-composited .sketch-sprite-stage {
+    transition: transform 1400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+.sketch-sprite-anchor {
+  position: absolute;
+  user-select: none;
+  pointer-events: none;
+}
+
+.sketch-sprite-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+@keyframes sk-rocket-a {
+  0%,
+  100% {
+    transform: translate3d(-12px, 14px, 0) rotate(-4deg);
+  }
+  50% {
+    transform: translate3d(18px, -18px, 0) rotate(5deg);
+  }
+}
+
+@keyframes sk-rocket-b {
+  0%,
+  100% {
+    transform: translate3d(10px, 16px, 0) rotate(4deg);
+  }
+  50% {
+    transform: translate3d(-18px, -14px, 0) rotate(-5deg);
+  }
+}
+
+@keyframes sk-saturn-orbit {
+  0%,
+  100% {
+    transform: translate3d(-14px, -8px, 0) rotate(-7deg) scale(0.97);
+  }
+  50% {
+    transform: translate3d(14px, 12px, 0) rotate(8deg) scale(1.03);
+  }
+}
+
+@keyframes sk-crab-scuttle {
+  0%,
+  100% {
+    transform: translate3d(-20px, 4px, 0) rotate(-6deg);
+  }
+  25% {
+    transform: translate3d(-4px, -7px, 0) rotate(4deg);
+  }
+  50% {
+    transform: translate3d(20px, 3px, 0) rotate(7deg);
+  }
+  75% {
+    transform: translate3d(4px, -6px, 0) rotate(-4deg);
+  }
+}
+
+@keyframes sk-skate-carve {
+  0%,
+  100% {
+    transform: translate3d(-22px, 10px, 0) rotate(-8deg);
+  }
+  50% {
+    transform: translate3d(22px, -12px, 0) rotate(9deg);
+  }
+}
+
+@keyframes sk-robot-nod {
+  0%,
+  100% {
+    transform: translate3d(0, -14px, 0) rotate(-6deg);
+  }
+  50% {
+    transform: translate3d(8px, 14px, 0) rotate(7deg);
+  }
+}
+
+@keyframes sk-ai-twinkle {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: translate3d(0, -10px, 0) rotate(-8deg) scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: translate3d(6px, 10px, 0) rotate(10deg) scale(1.08);
+  }
+}
+
+@keyframes sk-tumble-cw {
+  0% {
+    transform: translate3d(-10px, -10px, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(12px, 12px, 0) rotate(180deg);
+  }
+  100% {
+    transform: translate3d(-10px, -10px, 0) rotate(360deg);
+  }
+}
+
+@keyframes sk-tumble-ccw {
+  0% {
+    transform: translate3d(10px, -10px, 0) rotate(360deg);
+  }
+  50% {
+    transform: translate3d(-12px, 12px, 0) rotate(180deg);
+  }
+  100% {
+    transform: translate3d(10px, -10px, 0) rotate(0deg);
+  }
+}
+
+@keyframes sk-float-a {
+  0%,
+  100% {
+    transform: translate3d(-14px, -12px, 0) rotate(-7deg);
+  }
+  50% {
+    transform: translate3d(14px, 14px, 0) rotate(7deg);
+  }
+}
+
+@keyframes sk-float-b {
+  0%,
+  100% {
+    transform: translate3d(12px, -14px, 0) rotate(6deg);
+  }
+  50% {
+    transform: translate3d(-14px, 12px, 0) rotate(-7deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .kinetic-backdrop.is-smooth-composited .sketch-sprite-img {
+    animation-iteration-count: infinite;
+  }
+  .kinetic-backdrop.is-smooth-composited .sk-motion-rocket-a {
+    animation-name: sk-rocket-a;
+    animation-timing-function: ease-in-out;
+  }
+  .kinetic-backdrop.is-smooth-composited .sk-motion-rocket-b {
+    animation-name: sk-rocket-b;
+    animation-timing-function: ease-in-out;
+  }
+  .kinetic-backdrop.is-smooth-composited .sk-motion-saturn {
+    animation-name: sk-saturn-orbit;
+    animation-timing-function: ease-in-out;
+  }
+  .kinetic-backdrop.is-smooth-composited .sk-motion-crab {
+    animation-name: sk-crab-scuttle;
+    animation-timing-function: ease-in-out;
+  }
+  .kinetic-backdrop.is-smooth-composited .sk-motion-skate {
+    animation-name: sk-skate-carve;
+    animation-timing-function: ease-in-out;
+  }
+  .kinetic-backdrop.is-smooth-composited .sk-motion-robot {
+    animation-name: sk-robot-nod;
+    animation-timing-function: ease-in-out;
+  }
+  .kinetic-backdrop.is-smooth-composited .sk-motion-twinkle {
+    animation-name: sk-ai-twinkle;
+    animation-timing-function: ease-in-out;
+  }
+  .kinetic-backdrop.is-smooth-composited .sk-motion-tumble-cw {
+    animation-name: sk-tumble-cw;
+    animation-timing-function: linear;
+  }
+  .kinetic-backdrop.is-smooth-composited .sk-motion-tumble-ccw {
+    animation-name: sk-tumble-ccw;
+    animation-timing-function: linear;
+  }
+  .kinetic-backdrop.is-smooth-composited .sk-motion-float-a {
+    animation-name: sk-float-a;
+    animation-timing-function: ease-in-out;
+  }
+  .kinetic-backdrop.is-smooth-composited .sk-motion-float-b {
+    animation-name: sk-float-b;
+    animation-timing-function: ease-in-out;
+  }
+}
+
+@media (max-width: 768px) {
+  .sketch-sprite-anchor {
+    opacity: 0.62 !important;
+  }
+}

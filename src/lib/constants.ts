@@ -13,7 +13,6 @@ export const SITE_CONFIG = {
     twitter: "https://x.com/_outoftheblurr", // Placeholder
     linkedin: "https://www.linkedin.com/in/rohithajith/",
     substack: "https://substack.com/@integrationswithai?",
-    threads: "https://www.threads.com/@outoftheblurr",
   },
   nav: [
     { label: "Blog", href: "/blog" },
@@ -27,6 +26,14 @@ export const SITE_CONFIG = {
       role: "Founder",
       emoji: "🤖",
       description: "AI-powered development platform for hotels that acts as a virtual software and operations team. Operators describe needs in plain language, and the system helps build, deploy, and manage tailored tools like dynamic pricing agents, guest communication workflows, review monitoring, revenue forecasting, website fixes, and operational dashboards. It combines hospitality-specific context with AI planning, code generation, deployment, and monitoring, with approval safeguards for critical changes.",
+      url: "https://www.onautomation.uk/HotelDevbox/",
+    },
+    {
+      title: "ReviewHelp",
+      role: "Founder",
+      emoji: "⭐",
+      logo: "/adobe-express-file.png",
+      description: "Turn satisfied customers into public advocates with a streamlined review flow that plugs into your existing customer journey, reducing friction and operational overhead while keeping everything fully manual and compliant.",
       url: "#",
     },
     {

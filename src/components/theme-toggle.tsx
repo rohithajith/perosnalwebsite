@@ -21,25 +21,18 @@ export function ThemeToggle({ size = "normal" }: ThemeToggleProps) {
         e.stopPropagation();
         setTheme(resolvedTheme === "dark" ? "light" : "dark");
       }}
-      className={`relative inline-flex items-center justify-center rounded-full transition-colors focus:outline-none ${sizeClasses}`}
+      className={`ra-portal-btn relative inline-flex items-center justify-center rounded-full ${sizeClasses}`}
       aria-label="Toggle theme"
       title="Toggle theme"
     >
-      {/* background ring */}
-      <span className="absolute inset-0 rounded-full bg-white/0 dark:bg-black/0 pointer-events-none" />
-
       {/* Sun icon (light) */}
       <Sun
-        className={`transition-transform transition-opacity ${iconSize} ${
-          resolvedTheme === "dark" ? "opacity-0 scale-90" : "opacity-100 scale-100"
-        }`}
+        className={`transition-transform transition-opacity ${iconSize} opacity-100 scale-100 dark:opacity-0 dark:scale-90`}
       />
 
       {/* Moon icon (dark) */}
       <Moon
-        className={`absolute transition-transform transition-opacity ${iconSize} ${
-          resolvedTheme === "dark" ? "opacity-100 scale-100" : "opacity-0 scale-90"
-        }`}
+        className={`absolute transition-transform transition-opacity ${iconSize} opacity-0 scale-90 dark:opacity-100 dark:scale-100`}
       />
 
       <span className="sr-only">Toggle theme</span>
