@@ -79,6 +79,19 @@
     outline: 2px solid CanvasText;
     outline-offset: 3px;
   }
+
+  .ra-reading-surface {
+    background-color: color-mix(in oklab, var(--background) 74%, transparent);
+    border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
+    text-shadow: none;
+  }
+
+  @supports (backdrop-filter: blur(12px)) {
+    .ra-reading-surface {
+      backdrop-filter: blur(12px);
+    }
+  }
 }
 
 .dark main {

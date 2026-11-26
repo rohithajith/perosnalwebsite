@@ -21,14 +21,14 @@ export default function ProjectsPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12 md:py-20">
-      <div className="mb-16">
-        <h1 className="text-5xl md:text-6xl font-serif mb-6">Projects</h1>
+      <div className="ra-reading-surface rounded-2xl p-6 md:p-8 mb-12">
+        <h1 className="text-5xl md:text-6xl font-serif mb-4">Projects</h1>
         <p className="text-xl text-foreground max-w-2xl">
           Here&apos;s an overview of some of my open-source projects I&apos;ve worked on.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projects.map((project) => {
           const inner = (
             <>
@@ -63,12 +63,15 @@ export default function ProjectsPage() {
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col items-start"
+              className="ra-reading-surface group flex flex-col items-start rounded-2xl p-6 transition-transform duration-200 hover:-translate-y-0.5"
             >
               {inner}
             </a>
           ) : (
-            <div key={project.title} className="flex flex-col items-start">
+            <div
+              key={project.title}
+              className="ra-reading-surface flex flex-col items-start rounded-2xl p-6"
+            >
               {inner}
             </div>
           );
