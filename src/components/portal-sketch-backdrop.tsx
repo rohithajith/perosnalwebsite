@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import { KineticSketchBackdrop } from "./kinetic-sketch-backdrop";
 
 function subscribeReducedMotion(callback: () => void) {
@@ -16,6 +17,10 @@ function getReducedMotionSnapshot() {
 }
 
 export function PortalSketchBackdrop() {
+  const pathname = usePathname();
+  const pathSegments = (pathname || "").split("/").filter(Boolean);
+  const isReadingBlog = pathSegments[0] === "blog" && pathSegments.length >= 2;
+
   const prefersReducedMotion = useSyncExternalStore(
     subscribeReducedMotion,
     getReducedMotionSnapshot,
@@ -24,18 +29,18 @@ export function PortalSketchBackdrop() {
   const [scrollAngleDeg, setScrollAngleDeg] = useState<number>(0);
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion || isReadingBlog) return;
     const onScroll = () => {
       setScrollAngleDeg(Math.round(window.scrollY * 0.04));
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, isReadingBlog]);
 
   return (
     <KineticSketchBackdrop
-      angleDeg={scrollAngleDeg}
+      angleDeg={isReadingBlog ? 0 : scrollAngleDeg}
       slideIndex={0}
       instant={prefersReducedMotion}
     />
