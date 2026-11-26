@@ -13,6 +13,7 @@ export const SITE_CONFIG = {
     twitter: "https://x.com/_outoftheblurr", // Placeholder
     linkedin: "https://www.linkedin.com/in/rohithajith/",
     substack: "https://substack.com/@integrationswithai?",
+    website: "https://www.onautomation.uk",
   },
   nav: [
     { label: "Blog", href: "/blog" },

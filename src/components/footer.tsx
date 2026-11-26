@@ -1,4 +1,5 @@
 import { SITE_CONFIG } from "@/lib/constants";
+import { Globe } from "lucide-react";
 import Link from "next/link";
 
 export function Footer() {
@@ -84,6 +85,15 @@ export function Footer() {
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11l10.54 5.69V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/>
                 </svg>
+              </a>
+              <a
+                href={SITE_CONFIG.social.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground hover:text-blue-400 transition-colors"
+                aria-label="OnAutomation Website"
+              >
+                <Globe className="w-5 h-5" />
               </a>
             </div>
           </div>
